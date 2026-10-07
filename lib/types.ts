@@ -23,6 +23,8 @@ export interface Person {
 export interface Couple {
   partner1: Person;
   partner2: Person;
+  /** A drawing of the two of you, shown above the names in the invitation. */
+  illustration: string;
   /** Stamped into the wax seal and the closing monogram, e.g. "A & A". */
   monogram: string;
   hashtag: string;
@@ -83,7 +85,17 @@ export interface WeddingEvent {
   endISO: string;
   artwork: string;
   /** Used when `artwork` is empty — picks one of the built-in filigree gradients. */
-  artworkTone: 'mehendi' | 'haldi' | 'sangeet' | 'baraat' | 'pheras' | 'reception';
+  artworkTone:
+    | 'ganpati'
+    | 'engagement'
+    | 'mehendi'
+    | 'haldi'
+    | 'sangeet'
+    | 'mayra'
+    | 'baraat'
+    | 'swagat'
+    | 'pheras'
+    | 'reception';
   description: string;
   dressCode: string;
   venueName: string;

@@ -2,7 +2,7 @@
 
 import { useReveal } from '@/lib/hooks';
 
-type Variant = 'rise' | 'wipe' | 'scale';
+type Variant = 'rise' | 'wipe' | 'scale' | 'slide-r' | 'slide-l' | 'pop';
 
 /**
  * Wraps a block so it animates in the first time it scrolls into view.

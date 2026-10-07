@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { trackPage } from '@/lib/scroll';
 import type { PetalDensity } from '@/lib/types';
 
 interface Petal {
@@ -90,6 +91,17 @@ export function PetalCanvas({
     let slowFrames = 0;
     let last = performance.now();
 
+    /**
+     * Petals are caught by the page moving past them. Scrolling down pushes
+     * them up the screen and spins them a little — it is a small thing, but
+     * it is what makes the page feel like one moving object rather than a
+     * static backdrop with an animation on top.
+     */
+    let drift = 0;
+    const untrack = trackPage((_p, velocity) => {
+      drift = Math.max(-26, Math.min(26, velocity));
+    });
+
     const draw = (now: number) => {
       const dt = Math.min(48, now - last);
       last = now;
@@ -106,14 +118,19 @@ export function PetalCanvas({
       ctx.clearRect(0, 0, w, h);
       const step = dt / 16.67;
 
+      // Eases back to nothing when the page stops moving.
+      drift *= 0.92;
+
       for (const p of petals) {
-        p.y += p.vy * p.z * step * 1.6;
+        p.y += (p.vy * 1.6 - drift * 0.42 * p.z) * p.z * step;
         p.sway += p.swaySpeed * step;
         p.x += Math.sin(p.sway) * 0.7 * step;
-        p.rot += p.vr * step;
+        p.rot += (p.vr + drift * 0.0016) * step;
         p.flip += p.flipSpeed * step;
 
+        // Recycle off either edge, since a fast scroll can carry one upward.
         if (p.y > h + 40) Object.assign(p, make(), { x: Math.random() * w });
+        else if (p.y < -140) Object.assign(p, make(), { x: Math.random() * w, y: h + 30 });
 
         ctx.save();
         ctx.translate(p.x, p.y);
@@ -162,6 +179,7 @@ export function PetalCanvas({
     return () => {
       running = false;
       cancelAnimationFrame(raf);
+      untrack();
       document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('resize', onResize);
     };

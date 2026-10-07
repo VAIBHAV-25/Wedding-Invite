@@ -53,3 +53,23 @@ export function scratchValues(iso: string): { month: string; day: string; year: 
 export function longDate(iso: string): string {
   return fmt(iso, { day: 'numeric', month: 'long', year: 'numeric' });
 }
+
+/** "2027-01-30" in the wedding's timezone — used to group events into days. */
+export function dayKey(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: TZ,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(d);
+}
+
+/** The two halves of a day heading on the timeline. */
+export function dayHeading(iso: string): { weekday: string; date: string } {
+  return {
+    weekday: part(iso, 'weekday'),
+    date: `${part(iso, 'day')} ${part(iso, 'month')} ${part(iso, 'year')}`,
+  };
+}

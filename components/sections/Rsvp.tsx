@@ -96,7 +96,7 @@ export function Rsvp({ config }: { config: WeddingConfig }) {
         </Reveal>
       )}
 
-      <Reveal variant="scale" delay={80}>
+      <Reveal variant="pop" delay={80}>
         <div className="rsvp-card double-gold">
           {!showForm ? (
             <div className="rsvp-done">

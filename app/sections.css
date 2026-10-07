@@ -275,8 +275,8 @@
 .hero {
   display: grid;
   place-items: center;
-  min-height: 82dvh;
-  padding-block: 104px;
+  min-height: 94dvh;
+  padding-block: 118px;
   color: var(--ivory);
 }
 
@@ -286,10 +286,22 @@
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  width: min(84%, 340px);
-  /* Tall enough to enclose the names and the date beneath them. */
-  height: min(74%, 430px);
+  width: min(88%, 356px);
+  /* Tall enough to enclose the drawing, the names and the date. */
+  height: min(92%, 690px);
   pointer-events: none;
+}
+
+/* The base the two jambs stand on, so the arch reads as a closed frame. */
+.hero-frame::after {
+  content: '';
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-3) 22%, var(--gold-2) 50%, var(--gold-3) 78%, transparent);
+  opacity: 0.45;
 }
 
 .hero-arch {
@@ -297,15 +309,15 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
 .hero-sun {
   position: absolute;
-  top: 26%;
+  top: 30%;
   left: 50%;
   translate: -50% -50%;
-  opacity: 0.1;
+  opacity: 0.055;
   color: var(--gold-2);
 }
 
@@ -333,22 +345,21 @@
   display: inline-block;
   opacity: 0;
   white-space: pre;
+  will-change: transform, opacity;
 }
 
 .hero[data-live='true'] .letter {
-  animation: letter-in 0.85s var(--ease-royal) forwards;
+  animation: letter-in 0.72s var(--ease-royal) both;
 }
 
 @keyframes letter-in {
   from {
     opacity: 0;
-    transform: translate3d(0, 18px, 0);
-    filter: blur(7px);
+    transform: translate3d(0, 16px, 0) scale(0.96);
   }
   to {
     opacity: 1;
     transform: none;
-    filter: blur(0);
   }
 }
 
@@ -363,17 +374,17 @@
 }
 
 .hero[data-live='true'] .hero-amp {
-  animation: letter-in 0.9s var(--ease-royal) forwards;
+  animation: letter-in 0.8s var(--ease-royal) both;
 }
 
 .hero-meta {
-  margin-top: 26px;
+  margin-top: 30px;
   opacity: 0;
   color: var(--gold-2);
 }
 
 .hero[data-live='true'] .hero-meta {
-  animation: letter-in 1s var(--ease-royal) forwards;
+  animation: letter-in 0.9s var(--ease-royal) both;
 }
 
 .hero-meta svg {
@@ -586,34 +597,84 @@
 
 .cd-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
+  grid-template-columns: repeat(4, auto);
+  justify-content: center;
+  gap: clamp(8px, 3.5vw, 18px);
 }
 
 .cd-unit {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
+  perspective: 320px;
 }
 
-.cd-value {
-  font-size: clamp(1.9rem, 9vw, 2.6rem);
+.cd-dial {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* Each digit sits on its own little tile, and only the one that changed
+   flips — so the seconds tick while the days stay put. */
+.cd-digit {
+  display: inline-grid;
+  place-items: center;
+  min-width: 0.78em;
+  padding: 7px 3px 6px;
+  border-radius: 8px;
+  font-size: clamp(1.7rem, 8vw, 2.3rem);
   line-height: 1;
-  color: var(--ink);
-  font-variant-numeric: lining-nums;
-  animation: digit-flip 0.45s var(--ease-royal);
+  color: var(--velvet);
+  font-variant-numeric: lining-nums tabular-nums;
+  background: linear-gradient(180deg, #fffdf6 0%, var(--champagne) 100%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--gold-2) 30%, transparent),
+    0 2px 5px rgba(94, 11, 21, 0.1);
+  animation: digit-flip 0.5s var(--ease-royal);
+  transform-origin: 50% 0;
 }
 
 @keyframes digit-flip {
-  from {
-    transform: translateY(-5px);
-    opacity: 0.45;
+  0% {
+    transform: rotateX(-82deg);
+    opacity: 0;
   }
-  to {
-    transform: none;
+  60% {
+    transform: rotateX(8deg);
     opacity: 1;
   }
+  100% {
+    transform: none;
+  }
+}
+
+/* The thread filling up as the day approaches. */
+.cd-thread {
+  position: relative;
+  height: 2px;
+  margin: 22px auto 0;
+  max-width: 230px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--gold-2) 20%, transparent);
+  overflow: hidden;
+}
+
+.cd-thread span {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--gold-3), var(--gold-2) 45%, var(--gold-1));
+  transition: transform 1s linear;
+}
+
+.cd-counting {
+  margin: 12px 0 0;
+  font-size: 0.84rem;
+  font-style: italic;
+  color: color-mix(in srgb, var(--ink) 58%, transparent);
 }
 
 .cd-label {
@@ -670,6 +731,11 @@
 .milestone {
   position: relative;
   padding: 0 0 38px;
+}
+
+/* Without this the thread carries on past the final knot into empty space. */
+.milestones li:last-child .milestone {
+  padding-bottom: 0;
 }
 
 .knot {
@@ -842,122 +908,238 @@
 }
 
 /* ===========================================================================
-   FESTIVITIES
+   FESTIVITIES — THE TIMELINE
+   Eight ceremonies over two days. A single gold thread runs the whole way
+   down, each one hangs off it at its own hour, and the days are labelled —
+   so it reads as a schedule you can follow rather than eight separate cards.
    ======================================================================== */
-.event-list {
-  display: grid;
-  gap: 48px;
-  max-width: 400px;
-  margin: 0 auto;
+.timeline {
   position: relative;
   z-index: 4;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.tl-day + .tl-day {
+  margin-top: 14px;
+}
+
+.tl-day-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 18px;
+  padding-left: 42px;
+}
+
+.tl-day-head .t-caps {
+  color: var(--gold-2);
+}
+
+.tl-day-head strong {
+  font-size: 1.32rem;
+  font-weight: 500;
+  color: var(--ivory);
+}
+
+.tl-list {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 42px;
+  list-style: none;
+}
+
+/* The thread. It runs past the last item of every day except the final one,
+   so the two days read as one continuous evening rather than two blocks. */
+.tl-list::before {
+  content: '';
+  position: absolute;
+  left: 13px;
+  top: 4px;
+  bottom: -32px;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--gold-2) 55%, transparent) 6%,
+    color-mix(in srgb, var(--gold-2) 55%, transparent) 94%,
+    transparent
+  );
+}
+
+.tl-list[data-last='true']::before {
+  bottom: 26px;
+}
+
+.tl-item + .tl-item {
+  margin-top: 34px;
+}
+
+.tl-row {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+/* The knot on the thread. */
+.tl-node {
+  position: absolute;
+  left: -35px;
+  top: 5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--velvet-deep) 85%, transparent),
+    0 0 0 5px color-mix(in srgb, var(--gold-2) 30%, transparent);
+}
+
+.tl-time {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+}
+
+.tl-time-main {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.16rem;
+  color: var(--gold-1);
+}
+
+.tl-time-range {
+  font-size: 0.76rem;
+  font-style: italic;
+  color: color-mix(in srgb, var(--ivory) 52%, transparent);
+}
+
+/* --- the card hanging off each node -------------------------------------- */
+.tl-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--ivory);
+  box-shadow: 0 12px 30px rgba(10, 1, 3, 0.36);
 }
 
 .event-art {
   position: relative;
-  aspect-ratio: 3 / 4.1;
-  border-radius: 20px 20px 18px 18px;
+  /* The uploaded artwork is portrait — some of it near reel proportions, with
+     the subject low in frame and sky above. A shallow centre crop cut the
+     subject out, so the card is portrait and the crop is biased downward. */
+  aspect-ratio: 4 / 5;
   overflow: hidden;
-  box-shadow: 0 16px 40px rgba(10, 1, 3, 0.45);
 }
 
+/* The title sits at the top, so the scrim is heaviest there — putting it at
+   the bottom buried the subject behind the lettering. Kept light below the
+   title so the artwork itself is not dulled. */
 .event-scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(14, 2, 4, 0.72) 0%, rgba(14, 2, 4, 0.1) 46%, rgba(14, 2, 4, 0.5) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(14, 2, 4, 0.7) 0%,
+    rgba(14, 2, 4, 0.4) 26%,
+    rgba(14, 2, 4, 0.08) 52%,
+    rgba(14, 2, 4, 0) 72%,
+    rgba(14, 2, 4, 0.22) 100%
+  );
 }
 
 .event-overlay {
   position: absolute;
-  inset: 26px 18px auto;
+  inset: 14px 16px auto;
   text-align: center;
 }
 
 .event-title {
-  margin: 0 0 10px;
-  font-size: clamp(2.2rem, 10vw, 2.8rem);
-  line-height: 1.35;
-  color: var(--gold-1);
-  text-shadow: 0 2px 16px rgba(10, 1, 3, 0.7);
-}
-
-.event-date {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 0 0 6px;
-  font-size: 0.92rem;
-  color: var(--ivory);
-}
-
-.event-date i {
-  font-style: normal;
-  color: color-mix(in srgb, var(--gold-2) 70%, transparent);
-}
-
-.event-time {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: clamp(2.1rem, 9.5vw, 2.7rem);
+  line-height: 1.3;
+  color: var(--gold-1);
+  text-shadow: 0 2px 14px rgba(10, 1, 3, 0.8);
+}
+
+.event-sub {
+  margin: 4px 0 0;
+  font-size: 0.95rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ivory) 88%, transparent);
+  color: color-mix(in srgb, var(--ivory) 82%, transparent);
+  text-shadow: 0 1px 8px rgba(10, 1, 3, 0.8);
 }
 
 .event-body {
-  margin: -30px 16px 0;
-  padding: 32px 22px 24px;
-  border-radius: 18px;
-  background: var(--ivory);
+  padding: 18px 18px 16px;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(10, 1, 3, 0.3);
 }
 
 .event-desc {
-  margin: 0 auto 20px;
-  font-size: 1rem;
+  margin: 0 auto 14px;
+  font-size: 0.95rem;
   font-style: italic;
   color: color-mix(in srgb, var(--ink) 78%, transparent);
 }
 
-.event-dc-label {
-  margin: 0 0 6px;
-  color: var(--gold-3);
-}
-
 .event-dc {
-  margin: 0 0 18px;
-  font-size: 0.94rem;
+  margin: 0 0 14px;
+  font-size: 0.9rem;
   font-style: italic;
   color: var(--ink);
 }
 
+.event-dc-label {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--gold-3);
+}
+
 .event-rule {
   height: 1px;
-  margin: 0 auto 18px;
-  max-width: 180px;
+  margin: 0 auto 14px;
+  max-width: 150px;
   background: repeating-linear-gradient(90deg, var(--gold-2) 0 4px, transparent 4px 9px);
   opacity: 0.5;
 }
 
 .event-venue {
-  margin: 0 0 3px;
-  font-size: 1.02rem;
+  margin: 0 0 14px;
+  font-size: 0.96rem;
   color: var(--velvet);
-}
-
-.event-address {
-  margin: 0 0 18px;
-  font-size: 0.82rem;
-  font-style: italic;
-  color: color-mix(in srgb, var(--ink) 58%, transparent);
 }
 
 .event-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.event-actions .btn-ghost {
+  min-height: 38px;
+  padding: 8px 13px;
+  font-size: 0.66rem;
+  color: var(--gold-3);
+  border-color: color-mix(in srgb, var(--gold-2) 45%, transparent);
+}
+
+@media (max-width: 380px) {
+  .tl-list,
+  .tl-day-head {
+    padding-left: 34px;
+  }
+
+  .tl-node {
+    left: -29px;
+  }
+
+  .tl-list::before {
+    left: 10px;
+  }
 }
 
 /* ===========================================================================
@@ -1672,4 +1854,200 @@
   .cd-value {
     animation: none !important;
   }
+}
+
+/* The keyboard and screen-reader route into a scratch card.
+   It sits over the canvas, so it must not take pointer events or it swallows
+   the scratch gesture entirely. Keyboard activation still works: Enter on a
+   focused button fires a click regardless of pointer-events. */
+.scratch-a11y {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 0.7rem;
+  color: var(--ivory);
+}
+
+.scratch-a11y:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(46, 5, 9, 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cd-digit {
+    animation: none !important;
+  }
+
+  .cd-thread span {
+    transition: none !important;
+  }
+}
+
+/* ===========================================================================
+   SCROLL-DRIVEN MOTION
+   Everything here reads `--p` (0 to 1 as the element crosses the viewport),
+   written by the single driver in lib/scroll.ts. No JavaScript touches these
+   properties — it only supplies the number, CSS does the moving.
+   ======================================================================== */
+
+/* The artwork drifts against its card, which is what gives the timeline depth
+   instead of a stack of flat pictures. Scaled up so the drift never exposes
+   an edge. */
+.event-art img,
+.event-art .event-scene,
+.event-art .placeholder {
+  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * -38px), 0) scale(1.13);
+  will-change: transform;
+}
+
+/* Day headers follow you down their own run of ceremonies, so you always know
+   which day you are looking at. */
+.tl-day-head {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  padding-top: 14px;
+  padding-bottom: 12px;
+  background: linear-gradient(
+    to bottom,
+    var(--velvet-deep) 0%,
+    color-mix(in srgb, var(--velvet-deep) 92%, transparent) 62%,
+    transparent 100%
+  );
+}
+
+/* The knot lights up while its ceremony is the one on screen. */
+.tl-node {
+  transition:
+    transform 0.5s var(--ease-royal),
+    box-shadow 0.5s var(--ease-royal);
+}
+
+.tl-item[data-active='true'] .tl-node {
+  transform: scale(1.5);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--velvet-deep) 85%, transparent),
+    0 0 0 6px color-mix(in srgb, var(--gold-2) 45%, transparent),
+    0 0 18px 2px color-mix(in srgb, var(--gold-2) 55%, transparent);
+}
+
+.tl-item[data-active='true'] .tl-time-main {
+  color: var(--gold-1);
+}
+
+.tl-time-main {
+  transition: color 0.5s var(--ease-royal);
+}
+
+/* Pressing a card acknowledges the touch. */
+.tl-card {
+  transition: transform 0.4s var(--ease-royal), box-shadow 0.4s var(--ease-royal);
+}
+
+.tl-item[data-active='true'] .tl-card {
+  box-shadow: 0 18px 44px rgba(10, 1, 3, 0.48);
+}
+
+/* A gold sweep across each section title as it arrives. */
+.sec-title {
+  position: relative;
+  background-image: linear-gradient(
+    100deg,
+    transparent 38%,
+    color-mix(in srgb, var(--gold-1) 85%, transparent) 50%,
+    transparent 62%
+  );
+  background-size: 260% 100%;
+  background-position: 160% 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+[data-revealed='true'] > .sec-title {
+  animation: title-sheen 1.5s var(--ease-royal) 0.25s 1 both;
+}
+
+@keyframes title-sheen {
+  from {
+    background-position: 160% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
+}
+
+/* The hero's frame settles as you arrive on it. */
+.hero-frame {
+  transform: translate3d(-50%, -50%, 0) scale(calc(0.94 + var(--p, 0.5) * 0.1));
+  opacity: calc(0.35 + var(--p, 0.5) * 0.9);
+}
+
+/* The venue photograph drifts too. */
+.venue-frame img {
+  transform: translate3d(0, calc((var(--p, 0.5) - 0.5) * -26px), 0) scale(1.1);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-art img,
+  .event-art .event-scene,
+  .event-art .placeholder,
+  .venue-frame img,
+  .hero-frame {
+    transform: none !important;
+  }
+
+  .hero-frame {
+    opacity: 1 !important;
+  }
+
+  .tl-day-head {
+    position: static;
+  }
+
+  [data-revealed='true'] > .sec-title {
+    animation: none !important;
+  }
+
+  .tl-item[data-active='true'] .tl-node {
+    transform: none;
+  }
+}
+
+/* The drawing of the couple, above their names in the hero.
+   Cut out of its white ground, so it needs no mask — it stands on the velvet.
+   A warm drop shadow lifts it off the fabric rather than letting the pale
+   silk dissolve into the dark. */
+.couple-art {
+  display: block;
+  width: min(62%, 218px);
+  height: auto;
+  margin: 0 auto 6px;
+  filter: drop-shadow(0 10px 22px rgba(12, 1, 3, 0.55)) drop-shadow(0 2px 3px rgba(12, 1, 3, 0.4));
+}
+
+/* Set as a struck line rather than a footnote — a hashtag only works if
+   people can actually read it off the screen. */
+.hero-hash {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--gold-2) 38%, transparent);
+  background: color-mix(in srgb, var(--velvet-deep) 45%, transparent);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.92rem;
+  letter-spacing: 0.06em;
+  color: var(--gold-1);
+}
+
+.hero-hash span {
+  font-size: 0.62em;
+  color: var(--gold-2);
 }

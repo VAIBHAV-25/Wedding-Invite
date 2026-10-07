@@ -1,4 +1,4 @@
-# Priyal & Vaibhav — wedding invitation
+# Vaibhav & Priyal — wedding invitation
 
 An interactive wedding invitation: a sindoor-velvet envelope sealed with wax that
 you break and then pull open with your finger, a gold-dust transition, and a
@@ -129,6 +129,13 @@ Set `defaultTrackId: 'none'` for a silent invitation.
 
 **Only use music you have the right to use.** No film songs are bundled.
 
+### The couple's illustration
+
+`couple.illustration` points at the drawing shown in the invitation just above
+your names. Leave it empty to omit it. The edges are masked to nothing in CSS,
+so artwork on a white ground melts into the paper instead of sitting on it as
+a rectangle.
+
 ### Change colours and fonts
 
 `theme.colors` in the config, or the colour pickers under **Look & feel**. Every
@@ -251,15 +258,42 @@ gold focus ring. Form fields are 16px or larger, so iOS does not zoom on focus.
 
 ---
 
+## The schedule as it stands
+
+| | Ceremony | When | Artwork |
+|---|---|---|---|
+| 1 | Mehendi | Fri 29 Jan 2027, 11:00 am | `mehendi.jpeg` |
+| 2 | Ganpati Sthapana & Kalash | Sat 30 Jan 2027, 9:00 am | `ganpati.jpeg` |
+| 3 | Engagement | Sat 30 Jan 2027, 12:00 pm | `engagement.jpeg` |
+| 4 | Haldi | Sat 30 Jan 2027, 1:00 pm | `haldi.jpeg` |
+| 5 | Sangeet | Sat 30 Jan 2027, 6:00 pm | `sangeet.jpeg` |
+| 6 | Mayra | Sun 31 Jan 2027, 10:00 am | `mayra.jpeg` |
+| 7 | Baraat Swagat | Sun 31 Jan 2027, 6:00 pm | `baraat-swagat.jpeg` |
+| 8 | Reception | Sun 31 Jan 2027, 7:00 pm | `reception.jpeg` |
+| 9 | Fere | Sun 31 Jan 2027, 11:45 pm | `fere.jpeg` |
+
+All nine are at Monsoon Resort, Udaipur, and all use your illustrations from
+`public/img/events/`. They render as a **timeline**: grouped by day, hung off
+one gold thread, each at its own hour. Add, reorder or hide any of them in
+`config/wedding.config.ts` or under **Celebrations** in the Studio — the day
+grouping follows automatically from the dates.
+
+The countdown and the `Shubh Muhurat` card both point at the fere, 11:45 pm,
+since that is the wedding itself. Change `dates.weddingStart` if you would
+rather count to something else.
+
+---
+
 ## Still to send me
 
-- [ ] Both sets of parents' names (the config has `______` placeholders)
-- [ ] Which ceremonies you actually want, and their real times
-- [ ] Whether every event is at Monsoon Resort, or some are elsewhere
-- [ ] Dress codes and a one-line description for each
+- [ ] End times — I have assumed Mehendi to 4:00 pm, Sangeet to 11:30 pm,
+      Reception to 11:00 pm, and the fere running to about 2:00 am
+- [ ] Whether the dress codes I drafted are right, or you want your own
 - [ ] 8 to 30 photos, with a caption for each
-- [ ] Your real love-story milestones
-- [ ] The WhatsApp number RSVPs should go to
+- [ ] Your real love-story milestones (the five in there now are placeholders)
+- [ ] The WhatsApp number RSVPs should go to — currently a dummy
 - [ ] A music track you have the rights to — or say "none"
 - [ ] Hotels, airport and parking notes for the travel section
+- [ ] Latitude and longitude for Monsoon Resort, if you want pin-accurate
+      navigation rather than navigation by name
 - [ ] Your domain name

@@ -36,7 +36,8 @@ export function whatsappUrl(number: string, text: string): string {
 /** The message guests forward when they share the invitation onward. */
 export function shareMessage(config: WeddingConfig, url: string): string {
   const names = `${config.couple.partner1.shortName} & ${config.couple.partner2.shortName}`;
-  return `You are invited to the wedding of ${names} in ${config.couple.city}.\n\n${url}`;
+  const tag = config.couple.hashtag ? `\n\n${config.couple.hashtag}` : '';
+  return `You are invited to the wedding of ${names} in ${config.couple.city}.\n\n${url}${tag}`;
 }
 
 export function upiUrl(opts: {

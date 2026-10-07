@@ -254,8 +254,9 @@
 
 .raking-light {
   position: absolute;
-  inset: -30% -60%;
+  inset: -20% -40%;
   z-index: 26;
+  will-change: transform;
   pointer-events: none;
   background: linear-gradient(
     105deg,
@@ -265,7 +266,7 @@
     rgba(255, 220, 190, 0.09) 53%,
     transparent 62%
   );
-  animation: rake 11s linear infinite;
+  animation: rake 14s linear infinite;
 }
 
 @keyframes rake {

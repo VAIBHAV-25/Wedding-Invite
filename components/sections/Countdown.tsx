@@ -21,13 +21,23 @@ function remainingFrom(target: number): Remaining {
   };
 }
 
-function Unit({ value, label }: { value: number; label: string }) {
-  const text = String(value).padStart(2, '0');
+/**
+ * One unit of the countdown.
+ *
+ * Each digit is its own element keyed by its own value, so only the digit that
+ * actually changed flips — the seconds tick every second while the days sit
+ * still, which is what makes it feel alive rather than twitchy.
+ */
+function Unit({ value, label, pad = 2 }: { value: number; label: string; pad?: number }) {
+  const text = String(value).padStart(pad, '0');
   return (
     <div className="cd-unit">
-      {/* Keyed so the digits animate when they change. */}
-      <span key={text} className="t-display cd-value">
-        {text}
+      <span className="cd-dial">
+        {Array.from(text).map((d, i) => (
+          <span key={`${i}-${d}`} className="t-display cd-digit">
+            {d}
+          </span>
+        ))}
       </span>
       <span className="t-caps cd-label">{label}</span>
     </div>
@@ -55,6 +65,26 @@ export function Countdown({ config }: { config: WeddingConfig }) {
 
   // The ceremony runs for a day before it counts as over.
   const past = started && !left;
+
+  /**
+   * How far through the wait we are, measured from a year out. It gives the
+   * number somewhere to go instead of just ticking down in place.
+   */
+  const YEAR = 365 * 86400000;
+  const remaining = Math.max(0, target - Date.now());
+  const progress = Math.min(1, Math.max(0, 1 - remaining / YEAR));
+
+  const days = left?.days ?? 0;
+  const countingLine =
+    days > 180
+      ? 'Plenty of time to plan your outfit.'
+      : days > 60
+        ? 'Close enough to start getting excited.'
+        : days > 7
+          ? 'Nearly there. Have you booked your travel?'
+          : days > 1
+            ? 'Any day now.'
+            : 'Today is the day.';
   const sameDay = past && Date.now() - target < 86400000;
   const message = sameDay ? dates.countdownLiveMessage : dates.countdownEndMessage;
 
@@ -68,7 +98,7 @@ export function Countdown({ config }: { config: WeddingConfig }) {
 
   return (
     <section className="sec ivory-field" id="countdown">
-      <Reveal variant="scale">
+      <Reveal variant="pop">
         <div className="cd-card double-gold">
           <p className="t-caps cd-heading">The wedding</p>
           <p className="t-display cd-title">{dotted(dates.weddingStart)}</p>
@@ -77,12 +107,19 @@ export function Countdown({ config }: { config: WeddingConfig }) {
           {past ? (
             <p className="t-display cd-over">{message}</p>
           ) : (
-            <div className="cd-grid" aria-live="off">
-              <Unit value={left?.days ?? 0} label="Days" />
-              <Unit value={left?.hours ?? 0} label="Hours" />
-              <Unit value={left?.mins ?? 0} label="Mins" />
-              <Unit value={left?.secs ?? 0} label="Secs" />
-            </div>
+            <>
+              <div className="cd-grid" aria-live="off">
+                <Unit value={left?.days ?? 0} label="Days" pad={3} />
+                <Unit value={left?.hours ?? 0} label="Hours" />
+                <Unit value={left?.mins ?? 0} label="Mins" />
+                <Unit value={left?.secs ?? 0} label="Secs" />
+              </div>
+              {/* How far along we are, as a thread that fills up. */}
+              <div className="cd-thread" aria-hidden="true">
+                <span style={{ transform: `scaleX(${progress.toFixed(4)})` }} />
+              </div>
+              <p className="cd-counting">{countingLine}</p>
+            </>
           )}
 
           <p className="t-body cd-poem">{dates.poeticLine}</p>

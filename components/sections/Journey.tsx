@@ -44,7 +44,7 @@ export function Journey({ config }: { config: WeddingConfig }) {
         <ol className="milestones">
           {story.map((m, i) => (
             <li key={`${m.year}-${i}`}>
-              <Reveal delay={i * 60}>
+              <Reveal variant="slide-r" delay={i * 70}>
                 <article className="milestone">
                   <span className="knot" aria-hidden="true" />
                   <p className="t-caps milestone-year">{m.year}</p>

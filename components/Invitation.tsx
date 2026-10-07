@@ -114,10 +114,12 @@ export function Invitation({ config: committed }: { config: WeddingConfig }) {
           <Hero config={config} />
           <ScratchDate config={config} />
           {features.countdown && <Countdown config={config} />}
-          {features.story && <Journey config={config} />}
           {features.gallery && <Memories config={config} />}
           <Festivities config={config} />
           <Venue config={config} />
+          {/* Our story sits here, just before the ask — the guest has read the
+              when and the where, and this is the note to leave them on. */}
+          {features.story && <Journey config={config} />}
           <Rsvp config={config} />
           {features.shagun && <Shagun config={config} />}
           <Closing config={config} />

@@ -132,7 +132,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const fontVars = [display, body, name, script, caps, deva].map((f) => f.variable).join(' ');
 
   return (
-    <html lang="en" className={fontVars}>
+    // The inline script below adds data-opened before React hydrates, which
+    // React would otherwise report as a mismatch on <html>.
+    <html lang="en" className={fontVars} suppressHydrationWarning>
       <head>
         {/*
           Runs before the first paint. A guest who has already opened the

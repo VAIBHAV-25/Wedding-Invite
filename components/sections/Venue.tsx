@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Placeholder } from '@/components/ui/Placeholder';
+import { Parallax } from '@/components/ui/Parallax';
 import { SparkleDivider } from '@/components/ornaments';
 import { directionsUrl, haversineKm, placeCoords } from '@/lib/maps';
 import type { WeddingConfig } from '@/lib/types';
@@ -45,8 +46,8 @@ export function Venue({ config }: { config: WeddingConfig }) {
     <section className="sec ivory-field" id="venue">
       <SectionHeading label="Where" title="The Venue" />
 
-      <Reveal variant="scale">
-        <div className="venue-frame">
+      <Reveal variant="slide-l">
+        <Parallax className="venue-frame">
           {venue.image ? (
             <Image
               src={venue.image}
@@ -59,7 +60,7 @@ export function Venue({ config }: { config: WeddingConfig }) {
           ) : (
             <Placeholder tone="venue" />
           )}
-        </div>
+        </Parallax>
       </Reveal>
 
       <Reveal delay={100}>

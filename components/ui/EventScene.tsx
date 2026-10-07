@@ -7,9 +7,23 @@
  * vector they are a couple of kilobytes each and stay sharp on any screen.
  */
 
-type Tone = 'mehendi' | 'haldi' | 'sangeet' | 'baraat' | 'pheras' | 'reception';
+type Tone =
+  | 'ganpati'
+  | 'engagement'
+  | 'mehendi'
+  | 'haldi'
+  | 'sangeet'
+  | 'mayra'
+  | 'baraat'
+  | 'swagat'
+  | 'pheras'
+  | 'reception';
 
 const SKY: Record<Tone, [string, string, string]> = {
+  ganpati: ['#4a1508', '#8c3a12', '#e8a44a'],
+  engagement: ['#2a1038', '#55275f', '#c48ec4'],
+  mayra: ['#0f2a3d', '#255070', '#6ba8c9'],
+  swagat: ['#44120d', '#8a2f1c', '#e09a5c'],
   mehendi: ['#123327', '#1f5340', '#56a07c'],
   haldi: ['#4a3307', '#9a6f12', '#f0bb47'],
   sangeet: ['#1b0f33', '#3f2068', '#9c6fd4'],
@@ -250,6 +264,102 @@ export function EventScene({ tone }: { tone: Tone }) {
             <circle cy="-16" r="22" fill="#ffc46a" opacity="0.16" />
           </g>
           <Marigolds y={252} count={9} r={6.5} />
+        </g>
+      )}
+
+      {tone === 'ganpati' && (
+        <g>
+          <Torana color="#f0a33c" />
+          {/* A kalash on its plinth, under an arch of lamps */}
+          <g transform="translate(100 168)" stroke="#ffd9a0" fill="none" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M-26 44 H26 L22 54 H-22 Z" fill="#8a3a12" />
+            <path d="M-20 44 C -26 26 -24 8 -12 0 L 12 0 C 24 8 26 26 20 44 Z" fill="#c4761f" />
+            <path d="M-14 0 L-16 -8 H16 L14 0 Z" fill="#e0a04a" />
+            <ellipse cy="-9" rx="17" ry="4" fill="#e0a04a" />
+            {/* Coconut and mango leaves */}
+            <ellipse cy="-21" rx="9" ry="11" fill="#a8541f" />
+            <path d="M-16 -10 C -26 -18 -30 -30 -26 -38 C -17 -34 -13 -22 -14 -11 Z" fill="#2f6b3c" />
+            <path d="M16 -10 C 26 -18 30 -30 26 -38 C 17 -34 13 -22 14 -11 Z" fill="#2f6b3c" />
+            <path d="M-8 -13 C -14 -22 -14 -32 -9 -38 C -4 -31 -4 -21 -7 -13 Z" fill="#3b8049" />
+            <path d="M8 -13 C 14 -22 14 -32 9 -38 C 4 -31 4 -21 7 -13 Z" fill="#3b8049" />
+            <path d="M-16 16 h32 M-18 26 h36" opacity="0.5" />
+          </g>
+          <Diyas y={240} />
+          <Marigolds y={264} count={11} r={5} />
+        </g>
+      )}
+
+      {tone === 'engagement' && (
+        <g>
+          {/* Two rings, interlocked, under a soft light */}
+          <circle cx="100" cy="124" r="46" fill="#c48ec4" opacity="0.14" />
+          <g fill="none" stroke="#f0ddf5" strokeWidth="3.4">
+            <circle cx="86" cy="128" r="26" />
+            <circle cx="114" cy="128" r="26" opacity="0.9" />
+          </g>
+          <g fill="#ffe9a8">
+            <path d="M86 96 l4.4 7.6 h-8.8 Z" />
+            <circle cx="86" cy="94" r="3.4" />
+          </g>
+          {/* Petals on the table below */}
+          <g transform="translate(100 210)">
+            <ellipse ry="9" rx="54" fill="#efe4f5" opacity="0.85" />
+            <path d="M-54 0 L-48 42 L48 42 L54 0 Z" fill="#d8c5e4" opacity="0.8" />
+          </g>
+          <Marigolds y={258} count={11} r={5} />
+        </g>
+      )}
+
+      {tone === 'mayra' && (
+        <g>
+          <Torana color="#9fd0e8" />
+          {/* A laden thali carried in — the bhaat */}
+          <g transform="translate(100 150)">
+            <ellipse ry="7" rx="46" fill="#dcecf5" />
+            <path d="M-46 0 C -42 24 -26 36 0 36 C 26 36 42 24 46 0 Z" fill="#9fc4da" />
+            <g fill="#e8c56a">
+              <circle cx="-22" cy="12" r="8" />
+              <circle cx="0" cy="16" r="9" />
+              <circle cx="22" cy="12" r="8" />
+            </g>
+            <path d="M-30 -4 Q0 -14 30 -4" fill="none" stroke="#f2f8fc" strokeWidth="1.4" opacity="0.7" />
+          </g>
+          {/* Bangles stacked beside it */}
+          <g transform="translate(100 214)" fill="none" stroke="#e8c56a" strokeWidth="2.6">
+            {[-26, 0, 26].map((dx) => (
+              <g key={dx}>
+                <ellipse cx={dx} cy="0" rx="15" ry="5" />
+                <ellipse cx={dx} cy="8" rx="15" ry="5" opacity="0.7" />
+                <ellipse cx={dx} cy="16" rx="15" ry="5" opacity="0.45" />
+              </g>
+            ))}
+          </g>
+          <Marigolds y={258} count={11} r={5} />
+        </g>
+      )}
+
+      {tone === 'swagat' && (
+        <g>
+          <Torana color="#f0a33c" />
+          {/* The gateway, with an aarti thali at its threshold */}
+          <g stroke="#ffd9a0" fill="none" strokeWidth="1.8" strokeLinecap="round">
+            <line x1="44" y1="120" x2="44" y2="236" />
+            <line x1="156" y1="120" x2="156" y2="236" />
+            <path d="M44 120 Q72 86 100 104 Q128 86 156 120" />
+            <path d="M52 126 Q74 100 100 114 Q126 100 148 126" opacity="0.5" />
+          </g>
+          <g color="#e0803c">
+            <g transform="translate(0 -118)">
+              <Marigolds y={236} count={7} r={6} />
+            </g>
+          </g>
+          <g transform="translate(100 212)">
+            <ellipse ry="6" rx="30" fill="#e8c56a" />
+            <path d="M-30 0 C -27 16 -16 24 0 24 C 16 24 27 16 30 0 Z" fill="#c4902a" />
+            <path d="M0 -4 C -4 -11 -2 -17 0 -22 C 2 -17 4 -11 0 -4 Z" fill="#fff0c4" />
+            <circle cy="-12" r="17" fill="#ffc46a" opacity="0.2" />
+          </g>
+          <Marigolds y={258} count={9} r={6} />
         </g>
       )}
 

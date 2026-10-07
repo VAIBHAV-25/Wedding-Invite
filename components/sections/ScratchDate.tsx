@@ -14,16 +14,23 @@ function ScratchCard({
   label,
   value,
   index,
+  revealed,
   onRevealed,
 }: {
   label: string;
   value: string;
   index: number;
+  /** Set once any card has been scratched, so the others open with it. */
+  revealed: boolean;
   onRevealed: (index: number, el: HTMLDivElement | null) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [done, setDone] = useState(false);
+  // A sibling was scratched; fall open too.
+  useEffect(() => {
+    if (revealed) setDone(true);
+  }, [revealed]);
   const painting = useRef(false);
   const lastPt = useRef<{ x: number; y: number } | null>(null);
   const checking = useRef(0);
@@ -33,6 +40,10 @@ function ScratchCard({
     setDone(true);
     onRevealed(index, wrapRef.current);
   }, [done, index, onRevealed]);
+
+  const reveal = () => {
+    if (!done) finish();
+  };
 
   /** Paints the foil the guest scratches away. */
   useEffect(() => {
@@ -143,6 +154,11 @@ function ScratchCard({
           onPointerCancel={onUp}
         />
         {!done && (
+          <button type="button" className="scratch-a11y" onClick={reveal}>
+            Reveal the {label.toLowerCase()}
+          </button>
+        )}
+        {!done && (
           <span className="scratch-hand" aria-hidden="true">
             <svg viewBox="0 0 32 32">
               <path
@@ -165,8 +181,8 @@ function ScratchCard({
 export function ScratchDate({ config }: { config: WeddingConfig }) {
   const { month, day, year } = scratchValues(config.dates.weddingStart);
   const { muhurat } = config.dates;
-  const [revealed, setRevealed] = useState<Set<number>>(new Set());
   const [allOpen, setAllOpen] = useState(false);
+  const openedRef = useRef(false);
 
   const cards = [
     { label: 'Month', value: month },
@@ -174,57 +190,64 @@ export function ScratchDate({ config }: { config: WeddingConfig }) {
     { label: 'Year', value: year },
   ];
 
-  const onRevealed = useCallback(
-    (index: number, el: HTMLDivElement | null) => {
-      setRevealed((prev) => {
-        if (prev.has(index)) return prev;
-        const next = new Set(prev);
-        next.add(index);
+  /**
+   * The first scratch opens all three. Making someone repeat the same gesture
+   * to learn one date is work, not delight — the reward should land at once.
+   */
+  const onRevealed = useCallback((_index: number, el: HTMLDivElement | null) => {
+    if (openedRef.current) return;
+    openedRef.current = true;
+    setAllOpen(true);
 
-        const last = next.size === cards.length;
-        void (async () => {
-          const confetti = (await import('canvas-confetti')).default;
-          const r = el?.getBoundingClientRect();
-          const origin = r
-            ? { x: (r.left + r.width / 2) / window.innerWidth, y: (r.top + r.height / 2) / window.innerHeight }
-            : { x: 0.5, y: 0.5 };
+    const r = el?.getBoundingClientRect();
+    const origin = r
+      ? { x: (r.left + r.width / 2) / window.innerWidth, y: (r.top + r.height / 2) / window.innerHeight }
+      : { x: 0.5, y: 0.6 };
+
+    void (async () => {
+      const confetti = (await import('canvas-confetti')).default;
+      const colors = ['#D4AF37', '#F8E7A8', '#B3141F', '#F2B8BE', '#5E0B15'];
+      confetti({ particleCount: 160, spread: 115, startVelocity: 48, scalar: 0.95, origin, colors, disableForReducedMotion: true });
+      // A second, wider shower a beat later, so the burst has a tail.
+      window.setTimeout(
+        () =>
           confetti({
-            particleCount: last ? 150 : 70,
-            spread: last ? 110 : 70,
-            startVelocity: last ? 46 : 32,
-            scalar: 0.9,
-            origin,
-            colors: ['#D4AF37', '#F8E7A8', '#B3141F', '#F2B8BE', '#5E0B15'],
+            particleCount: 90,
+            spread: 140,
+            startVelocity: 34,
+            scalar: 0.8,
+            origin: { x: 0.5, y: 0.45 },
+            colors,
             disableForReducedMotion: true,
-          });
-        })();
+          }),
+        260,
+      );
+    })();
 
-        playChime(last ? 1174 : 880);
-        if (last) {
-          playDhol();
-          buzz([12, 60, 18, 60, 24]);
-          setAllOpen(true);
-        } else {
-          buzz(18);
-        }
-        return next;
-      });
-    },
-    [cards.length],
-  );
+    playChime(1174);
+    playDhol();
+    buzz([12, 60, 18, 60, 24]);
+  }, []);
 
   return (
     <section className="sec ivory-field" id="date">
       <SectionHeading
         label="The date"
         title="Save the Date"
-        lead="Scratch any card to reveal when we are getting married."
+        lead="Scratch any one of them — all three will open together."
       />
 
-      <Reveal variant="scale">
+      <Reveal variant="pop">
         <div className="scratch-row">
           {cards.map((c, i) => (
-            <ScratchCard key={c.label} label={c.label} value={c.value} index={i} onRevealed={onRevealed} />
+            <ScratchCard
+              key={c.label}
+              label={c.label}
+              value={c.value}
+              index={i}
+              revealed={allOpen}
+              onRevealed={onRevealed}
+            />
           ))}
         </div>
       </Reveal>
@@ -244,15 +267,9 @@ export function ScratchDate({ config }: { config: WeddingConfig }) {
         </Reveal>
       </div>
 
-      {revealed.size < cards.length && (
-        <button
-          type="button"
-          className="reveal-all"
-          onClick={() => {
-            cards.forEach((_, i) => onRevealed(i, null));
-          }}
-        >
-          Reveal all three
+      {!allOpen && (
+        <button type="button" className="reveal-all" onClick={() => onRevealed(0, null)}>
+          Just show me the date
         </button>
       )}
     </section>
