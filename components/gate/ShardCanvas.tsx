@@ -85,8 +85,8 @@ export function ShardCanvas({
       return {
         x: origin.x,
         y: origin.y,
-        vx: Math.cos(mid) * (1.4 + Math.random() * 2.2),
-        vy: Math.sin(mid) * (1.2 + Math.random() * 1.6) - 2.4,
+        vx: Math.cos(mid) * (2.2 + Math.random() * 3),
+        vy: Math.sin(mid) * (1.6 + Math.random() * 2) - 3.4,
         rot: 0,
         vr: (Math.random() - 0.5) * 0.26,
         pts,
@@ -110,7 +110,7 @@ export function ShardCanvas({
     });
 
     let raf = 0;
-    const gravity = 0.42;
+    const gravity = 0.66;
     const floor = h + 80;
 
     const draw = () => {
@@ -123,7 +123,7 @@ export function ShardCanvas({
         s.y += s.vy;
         s.rot += s.vr;
         // One small bounce, then they tumble out of frame.
-        if (!s.bounced && s.y > h * 0.86) {
+        if (!s.bounced && s.y > h * 0.9) {
           s.vy *= -0.32;
           s.vx *= 0.7;
           s.bounced = true;
@@ -180,7 +180,12 @@ export function ShardCanvas({
     };
 
     raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      // Cancelling the loop leaves whatever was drawn last sitting on the
+      // canvas, which turns the chips into litter on the card.
+      ctx.clearRect(0, 0, w, h);
+    };
   }, [active, origin, style, sealSize]);
 
   return (

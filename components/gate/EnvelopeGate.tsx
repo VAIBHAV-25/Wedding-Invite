@@ -12,17 +12,24 @@ import { music } from '@/lib/audio';
 import { playCrack, playChime, buzz } from '@/lib/sfx';
 import type { SealStyle } from '@/lib/types';
 
-export type GatePhase = 'sealed' | 'press' | 'crack' | 'shatter' | 'lift' | 'card' | 'vortex' | 'done';
+export type GatePhase = 'sealed' | 'press' | 'crack' | 'shatter' | 'flap' | 'card' | 'vortex' | 'done';
 
-/** Milliseconds from the tap. Deliberately unhurried — this is the moment. */
-const CUE = { crack: 200, shatter: 840, lift: 1320 } as const;
+/**
+ * Milliseconds from the tap. One gesture opens the whole thing: the wax
+ * cracks, light breaks out of the seam, the flap folds back and the card
+ * rises. Nothing waits on a second input.
+ */
+const CUE = {
+  crack: 140,
+  shatter: 560,
+  flap: 760,
+  card: 1620,
+  vortex: 2760,
+  done: 4500,
+} as const;
 
-/** How far a finger travels to lift the flap all the way. */
-const LIFT_TRAVEL = 250;
-/** Past this, letting go finishes the job rather than dropping the flap back. */
-const LIFT_COMMIT = 0.42;
-/** If nobody touches it, the envelope opens itself rather than leaving them stuck. */
-const SELF_OPEN_AFTER = 3400;
+/** How long the flap takes to fold all the way back. */
+const FLAP_MS = 1000;
 
 interface Props {
   monogram: string;
@@ -52,9 +59,8 @@ export function EnvelopeGate({
   const raf = useRef(0);
   const started = useRef(false);
   const lift = useRef(0);
-  const drag = useRef<{ id: number; startY: number; startLift: number } | null>(null);
-  const idleTimer = useRef(0);
   const notchedHalf = useRef(false);
+  const [glow, setGlow] = useState(false);
 
   const SEAL_SIZE = 152;
 
@@ -62,7 +68,6 @@ export function EnvelopeGate({
     timers.current.forEach(clearTimeout);
     timers.current = [];
     if (raf.current) cancelAnimationFrame(raf.current);
-    window.clearTimeout(idleTimer.current);
   };
 
   useEffect(() => clearTimers, []);
@@ -102,29 +107,6 @@ export function EnvelopeGate({
     [applyLift],
   );
 
-  /** The flap is all the way back: the card can come out. */
-  const finishOpening = useCallback(() => {
-    window.clearTimeout(idleTimer.current);
-    setPhase('card');
-    playChime(1046);
-    buzz([10, 50, 16]);
-    at(1500, () => {
-      setPhase('vortex');
-      onReveal();
-    });
-    at(4000, () => {
-      setPhase('done');
-      onFinished();
-    });
-  }, [onReveal, onFinished]);
-
-  const armSelfOpen = useCallback(() => {
-    window.clearTimeout(idleTimer.current);
-    idleTimer.current = window.setTimeout(() => {
-      tween(1, 2000, finishOpening);
-    }, SELF_OPEN_AFTER);
-  }, [tween, finishOpening]);
-
   const breakSeal = useCallback(
     (skip = false) => {
       if (started.current) return;
@@ -152,51 +134,30 @@ export function EnvelopeGate({
       });
       at(CUE.shatter, () => {
         setPhase('shatter');
+        // Light breaks out of the seam the moment the wax gives way.
+        setGlow(true);
         buzz(22);
       });
-      at(CUE.lift, () => {
-        setPhase('lift');
-        // The flap settles ajar, which is the invitation to pull it.
-        tween(0.09, 500);
-        armSelfOpen();
+      at(CUE.flap, () => {
+        setPhase('flap');
+        tween(1, FLAP_MS);
+      });
+      at(CUE.card, () => {
+        setPhase('card');
+        playChime(1046);
+        buzz([10, 50, 16]);
+      });
+      at(CUE.vortex, () => {
+        setPhase('vortex');
+        onReveal();
+      });
+      at(CUE.done, () => {
+        setPhase('done');
+        onFinished();
       });
     },
-    [onReveal, onFinished, tween, armSelfOpen],
+    [onReveal, onFinished, tween],
   );
-
-  /* --- dragging the flap ------------------------------------------------- */
-
-  const onPointerDown = (e: React.PointerEvent) => {
-    if (phase !== 'lift') return;
-    if (raf.current) cancelAnimationFrame(raf.current);
-    window.clearTimeout(idleTimer.current);
-    drag.current = { id: e.pointerId, startY: e.clientY, startLift: lift.current };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  };
-
-  const onPointerMove = (e: React.PointerEvent) => {
-    const d = drag.current;
-    if (!d || d.id !== e.pointerId) return;
-    // Pulling upward lifts the flap back over the top edge.
-    const travelled = (d.startY - e.clientY) / LIFT_TRAVEL;
-    applyLift(d.startLift + travelled);
-    if (lift.current >= 1) {
-      drag.current = null;
-      finishOpening();
-    }
-  };
-
-  const endDrag = (e: React.PointerEvent) => {
-    const d = drag.current;
-    if (!d || d.id !== e.pointerId) return;
-    drag.current = null;
-    if (lift.current >= LIFT_COMMIT) {
-      tween(1, 620, finishOpening);
-    } else {
-      tween(0.09, 480);
-      armSelfOpen();
-    }
-  };
 
   const sealPhase: 'idle' | 'press' | 'crack' | 'shatter' =
     phase === 'sealed' ? 'idle' : phase === 'press' ? 'press' : phase === 'crack' ? 'crack' : 'shatter';
@@ -207,10 +168,6 @@ export function EnvelopeGate({
         className="gate velvet"
         data-phase={phase}
         aria-hidden={phase === 'done'}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
       >
         <div className="env-lining">
           <div className="lining-pattern" />
@@ -253,14 +210,6 @@ export function EnvelopeGate({
 
         <p className="tap-hint t-script">{tapHint}</p>
 
-        {/* Shown once the wax is off, while the flap waits to be pulled. */}
-        <button type="button" className="lift-hint" onClick={() => tween(1, 900, finishOpening)}>
-          <svg viewBox="0 0 24 14" aria-hidden="true">
-            <path d="M3 11 L12 3 L21 11" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span className="t-caps">Pull the flap open</span>
-        </button>
-
         <div className="seal-wrap" ref={sealWrap}>
           <WaxSeal
             monogram={monogram}
@@ -285,8 +234,17 @@ export function EnvelopeGate({
           Skip to card
         </button>
 
+        {glow && sealBox && (
+          <span
+            className="seal-glow"
+            aria-hidden="true"
+            style={{ left: sealBox.x, top: sealBox.y }}
+          />
+        )}
+        <div className="glow-wash" aria-hidden="true" />
+
         <ShardCanvas
-          active={phase === 'shatter' || phase === 'lift'}
+          active={phase === 'shatter' || phase === 'flap'}
           origin={sealBox}
           style={sealStyle}
           sealSize={SEAL_SIZE}
