@@ -193,17 +193,17 @@
 
 .translit {
   margin: 0 0 7px;
-  font-size: 0.8rem;
+  font-size: 0.86rem;
   font-style: italic;
   letter-spacing: 0.03em;
-  color: color-mix(in srgb, var(--ink) 58%, transparent);
+  color: color-mix(in srgb, var(--ink) 76%, transparent);
 }
 
 .shloka-en {
   margin: 0 auto 22px;
   font-size: 0.89rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ink) 68%, transparent);
+  color: color-mix(in srgb, var(--ink) 82%, transparent);
 }
 
 .invite-text {
@@ -229,12 +229,12 @@
 }
 
 .parents-line {
-  margin: 2px auto 0;
-  max-width: 30ch;
-  font-size: 0.82rem;
+  margin: 4px auto 0;
+  max-width: 32ch;
+  font-size: 0.88rem;
   font-style: italic;
   line-height: 1.6;
-  color: color-mix(in srgb, var(--ink) 60%, transparent);
+  color: color-mix(in srgb, var(--ink) 78%, transparent);
 }
 
 /* The ampersand separates the two couplets, so it needs air around it. */
@@ -507,9 +507,9 @@
 
 .scratch-hint {
   margin: 10px 0 0;
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ink) 52%, transparent);
+  color: color-mix(in srgb, var(--ink) 74%, transparent);
 }
 
 .reveal-all {
@@ -519,7 +519,7 @@
   font-style: italic;
   text-decoration: underline;
   text-underline-offset: 4px;
-  color: color-mix(in srgb, var(--ink) 58%, transparent);
+  color: color-mix(in srgb, var(--ink) 76%, transparent);
 }
 
 .muhurat {
@@ -555,7 +555,7 @@
   margin: 8px 0 0;
   font-size: 0.82rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ink) 60%, transparent);
+  color: color-mix(in srgb, var(--ink) 78%, transparent);
 }
 
 .muhurat-note {
@@ -672,9 +672,9 @@
 
 .cd-counting {
   margin: 12px 0 0;
-  font-size: 0.84rem;
+  font-size: 0.88rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ink) 58%, transparent);
+  color: color-mix(in srgb, var(--ink) 76%, transparent);
 }
 
 .cd-label {
@@ -692,7 +692,7 @@
   margin: 22px auto 0;
   font-size: 0.92rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ink) 66%, transparent);
+  color: color-mix(in srgb, var(--ink) 80%, transparent);
 }
 
 .cd-actions {
@@ -814,7 +814,7 @@
 .polaroid-window {
   position: relative;
   display: block;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 4.3;
   overflow: hidden;
   background: var(--champagne);
 }
@@ -829,6 +829,7 @@
 
 .rail-hint {
   margin: 4px 0 0;
+  font-size: 0.68rem;
   text-align: center;
   color: var(--gold-3);
 }
@@ -916,7 +917,7 @@
 .timeline {
   position: relative;
   z-index: 4;
-  max-width: 420px;
+  max-width: 392px;
   margin: 0 auto;
 }
 
@@ -972,7 +973,7 @@
 }
 
 .tl-item + .tl-item {
-  margin-top: 34px;
+  margin-top: 28px;
 }
 
 .tl-row {
@@ -1030,7 +1031,7 @@
   /* The uploaded artwork is portrait — some of it near reel proportions, with
      the subject low in frame and sky above. A shallow centre crop cut the
      subject out, so the card is portrait and the crop is biased downward. */
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 4.3;
   overflow: hidden;
 }
 
@@ -1073,13 +1074,13 @@
 }
 
 .event-body {
-  padding: 18px 18px 16px;
+  padding: 16px 16px 18px;
   text-align: center;
 }
 
 .event-desc {
   margin: 0 auto 14px;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-style: italic;
   color: color-mix(in srgb, var(--ink) 78%, transparent);
 }
@@ -1178,15 +1179,19 @@
   margin: 0 auto 22px;
   font-size: 0.92rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ink) 66%, transparent);
+  color: color-mix(in srgb, var(--ink) 80%, transparent);
 }
 
-.venue-extras {
+.venue-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
+  gap: 10px;
+}
+
+.venue-actions .btn-pill {
+  padding-inline: 26px;
 }
 
 .distance-chip {
@@ -1266,9 +1271,9 @@
 
 .hotel-note {
   margin: 2px 0 4px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ink) 56%, transparent);
+  color: color-mix(in srgb, var(--ink) 76%, transparent);
 }
 
 .hotel-links {
@@ -1430,10 +1435,10 @@
 
 .rsvp-note {
   margin: 0;
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   font-style: italic;
   text-align: center;
-  color: color-mix(in srgb, var(--ink) 52%, transparent);
+  color: color-mix(in srgb, var(--ink) 74%, transparent);
 }
 
 .rsvp-done {
@@ -1524,14 +1529,14 @@
   margin: 18px 0 0;
   font-size: 0.84rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ink) 66%, transparent);
+  color: color-mix(in srgb, var(--ink) 80%, transparent);
 }
 
 .shagun-trust {
   margin: 14px 0 0;
   font-size: 0.72rem;
   font-style: italic;
-  color: color-mix(in srgb, var(--ink) 48%, transparent);
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
 }
 
 /* ===========================================================================
@@ -1905,18 +1910,26 @@
 
 /* Day headers follow you down their own run of ceremonies, so you always know
    which day you are looking at. */
+/* The header used to stick behind a dark gradient slab, which read as a block
+   of a different colour laid over the velvet. Blur alone separates it from
+   what is passing underneath without tinting the surface, and a gold hairline
+   gives it an edge to sit on. */
 .tl-day-head {
   position: sticky;
   top: 0;
   z-index: 6;
-  padding-top: 14px;
-  padding-bottom: 12px;
-  background: linear-gradient(
-    to bottom,
-    var(--velvet-deep) 0%,
-    color-mix(in srgb, var(--velvet-deep) 92%, transparent) 62%,
-    transparent 100%
-  );
+  padding: 13px 0 11px;
+  backdrop-filter: blur(16px) saturate(125%);
+  -webkit-backdrop-filter: blur(16px) saturate(125%);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--gold-2) 24%, transparent);
+}
+
+/* No blur support (older in-app browsers): fall back to a soft tint so the
+   text never sits directly on a moving picture. */
+@supports not (backdrop-filter: blur(1px)) {
+  .tl-day-head {
+    background: color-mix(in srgb, var(--velvet-deep) 72%, transparent);
+  }
 }
 
 /* The knot lights up while its ceremony is the one on screen. */

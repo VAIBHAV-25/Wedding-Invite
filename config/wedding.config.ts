@@ -30,7 +30,7 @@ export const wedding: WeddingConfig = {
     illustration: '/img/couple.png',
     // Stamped into the wax seal on the envelope and the closing monogram.
     monogram: 'V & P',
-    hashtag: '#Vip_LoveStory',
+    hashtag: '#ViP_LoveStory',
     city: 'Udaipur, Rajasthan',
   },
 

@@ -79,6 +79,7 @@ body {
   color: var(--ink);
   font-family: var(--font-body), Georgia, 'Times New Roman', serif;
   font-size: 18px;
+  font-weight: 500;
   line-height: 1.62;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -352,6 +353,7 @@ textarea {
 
 .t-body {
   font-family: var(--font-body), Georgia, serif;
+  font-weight: 500;
   /* Serif body text wants a touch more leading and under 70 characters a line. */
   max-width: 34ch;
   margin-inline: auto;

@@ -1,17 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Bridge } from '@/components/ui/Bridge';
 import { Parallax, useActiveBand } from '@/components/ui/Parallax';
 import { EventScene } from '@/components/ui/EventScene';
 import { timeRange, time, dayKey, dayHeading } from '@/lib/format';
-import { directionsUrl, appleMapsUrl } from '@/lib/maps';
-import { downloadIcs, googleCalendarUrl } from '@/lib/calendar';
+import { directionsUrl } from '@/lib/maps';
 import { visibleEvents } from '@/lib/content';
-import { isIOS } from '@/lib/hooks';
 import type { WeddingConfig, WeddingEvent } from '@/lib/types';
 
 function MapPin() {
@@ -29,15 +27,7 @@ function MapPin() {
   );
 }
 
-function EventCard({ event, ios }: { event: WeddingEvent; ios: boolean }) {
-  const cal = {
-    title: event.title,
-    description: event.description,
-    location: `${event.venueName}, ${event.address}`,
-    startISO: event.startISO,
-    endISO: event.endISO,
-  };
-
+function EventCard({ event }: { event: WeddingEvent }) {
   return (
     <article className="tl-card">
       <Parallax className="event-art">
@@ -81,35 +71,12 @@ function EventCard({ event, ios }: { event: WeddingEvent; ios: boolean }) {
           Get directions
         </a>
 
-        <div className="event-actions">
-          <button type="button" className="btn-ghost" onClick={() => downloadIcs([cal], event.title, event.id)}>
-            Add to calendar
-          </button>
-          <a className="btn-ghost" href={googleCalendarUrl(cal)} target="_blank" rel="noreferrer">
-            Google
-          </a>
-          {ios && (
-            <a className="btn-ghost" href={appleMapsUrl(event)} target="_blank" rel="noreferrer">
-              Apple Maps
-            </a>
-          )}
-          {event.mapsUrl && (
-            <a className="btn-ghost" href={event.mapsUrl} target="_blank" rel="noreferrer">
-              Exact pin
-            </a>
-          )}
-          {event.hostPhone && (
-            <a className="btn-ghost" href={`tel:${event.hostPhone.replace(/\s/g, '')}`}>
-              Call host
-            </a>
-          )}
-        </div>
       </div>
     </article>
   );
 }
 
-function TimelineItem({ event, ios }: { event: WeddingEvent; ios: boolean }) {
+function TimelineItem({ event }: { event: WeddingEvent }) {
   const ref = useRef<HTMLLIElement>(null);
   // Lights the knot while this ceremony is the one you are looking at.
   useActiveBand(ref);
@@ -124,7 +91,7 @@ function TimelineItem({ event, ios }: { event: WeddingEvent; ios: boolean }) {
             <span className="tl-time-range">{timeRange(event.startISO, event.endISO)}</span>
           </p>
         </div>
-        <EventCard event={event} ios={ios} />
+        <EventCard event={event} />
       </Reveal>
     </li>
   );
@@ -132,9 +99,6 @@ function TimelineItem({ event, ios }: { event: WeddingEvent; ios: boolean }) {
 
 export function Festivities({ config }: { config: WeddingConfig }) {
   const events = visibleEvents(config);
-  const [ios, setIos] = useState(false);
-  useEffect(() => setIos(isIOS()), []);
-
   /**
    * Eight ceremonies across two days read as a schedule, not a stack of cards —
    * so they are grouped by day and hung off a single gold thread, with the
@@ -170,7 +134,7 @@ export function Festivities({ config }: { config: WeddingConfig }) {
 
             <ol className="tl-list" data-last={di === days.length - 1 ? 'true' : undefined}>
               {day.list.map((e) => (
-                <TimelineItem key={e.id} event={e} ios={ios} />
+                <TimelineItem key={e.id} event={e} />
               ))}
             </ol>
           </div>

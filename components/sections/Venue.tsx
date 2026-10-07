@@ -7,40 +7,12 @@ import { Reveal } from '@/components/ui/Reveal';
 import { Placeholder } from '@/components/ui/Placeholder';
 import { Parallax } from '@/components/ui/Parallax';
 import { SparkleDivider } from '@/components/ornaments';
-import { directionsUrl, haversineKm, placeCoords } from '@/lib/maps';
+import { directionsUrl } from '@/lib/maps';
 import type { WeddingConfig } from '@/lib/types';
 
 export function Venue({ config }: { config: WeddingConfig }) {
   const { venue, travel } = config;
-  const [distance, setDistance] = useState<string | null>(null);
-  const [asking, setAsking] = useState(false);
   const [showMap, setShowMap] = useState(false);
-
-  /**
-   * Only ever asked for when the guest taps the chip — never on page load.
-   * If they decline, the chip simply disappears.
-   */
-  const askDistance = () => {
-    const target = placeCoords(venue);
-    if (!target || !navigator.geolocation) {
-      setDistance(null);
-      return;
-    }
-    setAsking(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const km = haversineKm({ lat: pos.coords.latitude, lng: pos.coords.longitude }, target);
-        const mins = Math.round((km / 32) * 60);
-        setDistance(km < 1 ? 'You are here' : `About ${Math.round(km)} km away · roughly ${mins} min by road`);
-        setAsking(false);
-      },
-      () => {
-        setAsking(false);
-        setDistance(null);
-      },
-      { timeout: 8000, maximumAge: 300000 },
-    );
-  };
 
   return (
     <section className="sec ivory-field" id="venue">
@@ -69,24 +41,15 @@ export function Venue({ config }: { config: WeddingConfig }) {
           <h3 className="t-display venue-name">{venue.name}</h3>
           <p className="t-body venue-address">{venue.address}</p>
 
-          <a className="btn-pill" href={directionsUrl(venue)} target="_blank" rel="noreferrer">
-            Get directions
-          </a>
-
-          <div className="venue-extras">
-            {!distance && (
-              <button type="button" className="btn-ghost" onClick={askDistance} disabled={asking}>
-                {asking ? 'Checking…' : 'How far am I?'}
-              </button>
-            )}
-            {distance && <p className="distance-chip t-caps">{distance}</p>}
-
+          <div className="venue-actions">
+            <a className="btn-pill" href={directionsUrl(venue)} target="_blank" rel="noreferrer">
+              Get directions
+            </a>
             {venue.mapsUrl && (
               <a className="btn-ghost" href={venue.mapsUrl} target="_blank" rel="noreferrer">
-                Exact pin on Maps
+                Exact pin
               </a>
             )}
-
             {venue.mapEmbedUrl && !showMap && (
               <button type="button" className="btn-ghost" onClick={() => setShowMap(true)}>
                 Show map
