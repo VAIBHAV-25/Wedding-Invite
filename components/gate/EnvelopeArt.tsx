@@ -1,4 +1,3 @@
-import { cuspedArchPath } from '@/components/ornaments/geometry';
 import { DeityMotif, type Deity } from '@/components/ornaments/deities';
 
 /**
@@ -85,8 +84,10 @@ export function FoilPaisleyRun({ className = '' }: { className?: string }) {
 }
 
 /**
- * The crest at the head of the envelope: the deity in a cusped niche, the way
- * a wedding card carries the invocation before anything else is said.
+ * The crest at the head of the envelope: the deity, and a rule beneath it.
+ *
+ * It used to sit inside a cusped niche. The arch crowded the motif at this
+ * size and the Ganesha reads better standing on its own.
  */
 export function EnvelopeCrest({
   deity,
@@ -98,27 +99,7 @@ export function EnvelopeCrest({
   if (deity === 'none') return null;
   return (
     <div className="foil-crest" aria-hidden="true">
-      <svg className="crest-niche" viewBox="0 0 140 152" fill="none" aria-hidden="true">
-        {/* The cusped niche */}
-        <path
-          d={cuspedArchPath(140, 152, 84, 5)}
-          stroke="currentColor"
-          strokeWidth="1.1"
-          strokeLinejoin="round"
-        />
-        <path
-          d={cuspedArchPath(140, 152, 84, 5, 6)}
-          stroke="currentColor"
-          strokeWidth="0.7"
-          opacity="0.5"
-          strokeLinejoin="round"
-        />
-        {/* A finial over the apex */}
-        <path d="M70 10 L70 3" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-        <circle cx="70" cy="1.6" r="1.8" fill="currentColor" />
-      </svg>
-
-      <DeityMotif deity={deity} image={image} size={96} className="crest-deity" />
+      <DeityMotif deity={deity} image={image} size={104} className="crest-deity" />
 
       <svg className="crest-base" viewBox="0 0 140 18" fill="none" aria-hidden="true">
         <path d="M18 3 H122" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" opacity="0.7" />
