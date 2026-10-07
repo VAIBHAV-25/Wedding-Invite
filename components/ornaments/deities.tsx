@@ -116,12 +116,15 @@ export function DeityMotif({
   size = 112,
   className,
   image,
+  priority = false,
 }: {
   deity: Deity;
   size?: number;
   className?: string;
   /** Your own licensed artwork. A transparent PNG or SVG works best. */
   image?: string;
+  /** Set where the motif is above the fold, so it is not lazy-loaded. */
+  priority?: boolean;
 }) {
   if (deity === 'none') return null;
 
@@ -138,7 +141,14 @@ export function DeityMotif({
         aria-hidden="true"
         style={{ position: 'relative', display: 'block', width: size, height: size }}
       >
-        <Image src={image} alt="" fill sizes={`${size * 2}px`} style={{ objectFit: 'contain' }} />
+        <Image
+          src={image}
+          alt=""
+          fill
+          priority={priority}
+          sizes={`${size * 2}px`}
+          style={{ objectFit: 'contain' }}
+        />
       </span>
     );
   }

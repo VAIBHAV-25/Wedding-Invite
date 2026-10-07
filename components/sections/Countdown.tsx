@@ -89,7 +89,7 @@ export function Countdown({ config }: { config: WeddingConfig }) {
   const message = sameDay ? dates.countdownLiveMessage : dates.countdownEndMessage;
 
   const calEvent = {
-    title: `${couple.partner1.shortName} & ${couple.partner2.shortName} — Wedding`,
+    title: `Wedding of ${couple.partner1.shortName} & ${couple.partner2.shortName}`,
     description: dates.poeticLine,
     location: `${config.venue.name}, ${config.venue.address}`,
     startISO: dates.weddingStart,

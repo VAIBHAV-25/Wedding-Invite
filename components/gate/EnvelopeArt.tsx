@@ -99,7 +99,8 @@ export function EnvelopeCrest({
   if (deity === 'none') return null;
   return (
     <div className="foil-crest" aria-hidden="true">
-      <DeityMotif deity={deity} image={image} size={104} className="crest-deity" />
+      {/* The envelope is the first thing painted, so this must not be lazy. */}
+      <DeityMotif deity={deity} image={image} size={104} className="crest-deity" priority />
 
       <svg className="crest-base" viewBox="0 0 140 18" fill="none" aria-hidden="true">
         <path d="M18 3 H122" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round" opacity="0.7" />

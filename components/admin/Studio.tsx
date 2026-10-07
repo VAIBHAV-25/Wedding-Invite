@@ -426,7 +426,7 @@ export function Studio() {
                     label="Artwork"
                     value={e.artwork}
                     onChange={(v) => patchEvent(e.id, { artwork: v })}
-                    hint="Put the file in public/img and write /img/your-file.jpg — or leave empty for the drawn scene"
+                    hint="Put the file in public/img and write /img/your-file.jpg, or leave empty for the drawn scene"
                   />
                   <Pick
                     label="Drawn scene"
@@ -454,7 +454,7 @@ export function Studio() {
           {tab === 'story' && (
             <>
               {config.story.map((m, i) => (
-                <Group key={i} title={`${m.year} — ${m.title}`}>
+                <Group key={i} title={`${m.year}: ${m.title}`}>
                   <Row>
                     <Text
                       label="Year"
@@ -539,13 +539,13 @@ export function Studio() {
 
               <Group title="Music" open>
                 <p className="studio-note">
-                  Put your track in <code>public/audio</code>. Nothing plays until a guest taps the seal —
-                  that tap is what unlocks audio on a phone.
+                  Put your track in <code>public/audio</code>. Nothing plays until a guest taps the
+                  seal, and that tap is what unlocks audio on a phone.
                 </p>
                 {config.music.tracks.map((t, i) => (
                   <div key={t.id} className="track">
                     <Text
-                      label={`${t.title} — file`}
+                      label={`${t.title}, file`}
                       value={t.src}
                       onChange={(v) =>
                         set('music', {

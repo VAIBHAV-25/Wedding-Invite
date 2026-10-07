@@ -81,7 +81,7 @@ one without deleting it. The minimum you need:
   startISO: '2027-01-29T11:00:00+05:30',
   endISO: '2027-01-29T16:00:00+05:30',
   description: 'One line, shown in italics under the artwork.',
-  dressCode: 'Mint and sunshine yellow',
+  dressCode: '',                 // left empty hides the dress code block
   venueName: 'Monsoon Resort',
   address: 'Udaipur, Rajasthan',
   mapsUrl: 'https://maps.app.goo.gl/…',
@@ -278,6 +278,10 @@ one gold thread, each at its own hour. Add, reorder or hide any of them in
 `config/wedding.config.ts` or under **Celebrations** in the Studio — the day
 grouping follows automatically from the dates.
 
+No dress codes are set. Each event has an empty `dressCode`, and the block is
+hidden whenever it is empty, so filling one in is all it takes to bring it back
+for that ceremony.
+
 The countdown and the `Shubh Muhurat` card both point at the fere, 11:45 pm,
 since that is the wedding itself. Change `dates.weddingStart` if you would
 rather count to something else.
@@ -288,7 +292,6 @@ rather count to something else.
 
 - [ ] End times — I have assumed Mehendi to 4:00 pm, Sangeet to 11:30 pm,
       Reception to 11:00 pm, and the fere running to about 2:00 am
-- [ ] Whether the dress codes I drafted are right, or you want your own
 - [ ] 8 to 30 photos, with a caption for each
 - [ ] Your real love-story milestones (the five in there now are placeholders)
 - [ ] The WhatsApp number RSVPs should go to — currently a dummy

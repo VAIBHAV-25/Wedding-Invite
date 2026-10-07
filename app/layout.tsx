@@ -114,7 +114,7 @@ function eventSchema() {
     .map((e) => ({
       '@context': 'https://schema.org',
       '@type': 'Event',
-      name: `${e.title} — ${names}`,
+      name: `${e.title}, ${names}`,
       startDate: e.startISO,
       endDate: e.endISO || undefined,
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',

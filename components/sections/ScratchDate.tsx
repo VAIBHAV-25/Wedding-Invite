@@ -234,7 +234,7 @@ export function ScratchDate({ config }: { config: WeddingConfig }) {
       <SectionHeading
         label="The date"
         title="Save the Date"
-        lead="Scratch any one of them — all three will open together."
+        lead="Scratch any one of them and all three will open together."
       />
 
       <Reveal variant="pop">
