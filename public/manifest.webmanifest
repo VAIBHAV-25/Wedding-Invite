@@ -1,0 +1,13 @@
+{
+  "name": "Wedding Invitation",
+  "short_name": "Invitation",
+  "description": "An interactive wedding invitation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2E0509",
+  "theme_color": "#2E0509",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

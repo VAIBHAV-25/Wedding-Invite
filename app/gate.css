@@ -1,0 +1,825 @@
+/* ===========================================================================
+   THE ENVELOPE GATE
+   Everything here animates transform and opacity only, so the whole sequence
+   stays on the compositor.
+   ======================================================================== */
+
+.gate {
+  position: fixed;
+  inset: 0;
+  left: 50%;
+  width: 100%;
+  translate: -50% 0;
+  z-index: 50;
+  overflow: hidden;
+  perspective: 1200px;
+  perspective-origin: 50% 30%;
+  /* Taps anywhere must not scroll the page underneath. */
+  touch-action: none;
+}
+
+.gate[data-phase='done'] {
+  display: none;
+}
+
+@media (min-width: 700px) {
+  .gate {
+    width: var(--reel-w);
+    height: min(100dvh, var(--reel-max-h));
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    box-shadow:
+      0 0 0 1px rgba(212, 175, 55, 0.22),
+      0 40px 120px rgba(0, 0, 0, 0.65);
+  }
+}
+
+/* --- the inside of the envelope ----------------------------------------- */
+.env-lining {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(170deg, #4a0810 0%, #2a0407 55%, #1b0205 100%);
+}
+
+.lining-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.055;
+  background-image:
+    repeating-linear-gradient(45deg, transparent 0 26px, rgba(212, 175, 55, 0.4) 26px 27px),
+    repeating-linear-gradient(-45deg, transparent 0 26px, rgba(212, 175, 55, 0.28) 26px 27px);
+}
+
+/* --- the card rising out of the pocket ----------------------------------- */
+.env-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(84%, 356px);
+  aspect-ratio: 3 / 4.25;
+  /* Parked down inside the pocket, out of sight behind .env-front. */
+  transform: translate3d(-50%, 18%, 0) scale(0.9);
+  opacity: 0;
+  z-index: 10;
+  transition:
+    transform 1.5s var(--ease-royal),
+    opacity 0.5s linear;
+}
+
+.gate[data-phase='card'] .env-card,
+.gate[data-phase='vortex'] .env-card {
+  transform: translate3d(-50%, -50%, 0) scale(1);
+  opacity: 1;
+}
+
+/* The card grows past the frame as the vortex takes over, so the hand-off to
+   the invitation itself feels like one continuous move. */
+.gate[data-phase='vortex'] .env-card {
+  transform: translate3d(-50%, -50%, 0) scale(1.75);
+  transition-duration: 1.7s;
+}
+
+.env-card-face {
+  position: relative;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background:
+    radial-gradient(90% 60% at 50% 0%, #fffdf7 0%, var(--ivory) 60%),
+    var(--ivory);
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.4),
+    0 18px 50px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+.env-card-arch {
+  position: absolute;
+  inset: 7% 8%;
+  width: 84%;
+  height: 86%;
+  opacity: 0.55;
+}
+
+.env-card-rosette {
+  position: absolute;
+  opacity: 0.35;
+}
+
+.env-card-monogram {
+  position: relative;
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
+}
+
+/* Warm light behind the card as it clears the pocket. */
+.env-card-rays {
+  position: absolute;
+  inset: -40%;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(circle, rgba(255, 236, 190, 0.85) 0%, rgba(212, 175, 55, 0.3) 35%, transparent 68%);
+  transition: opacity 0.9s ease-out;
+}
+
+.gate[data-phase='card'] .env-card-rays {
+  opacity: 1;
+}
+
+/* --- the pocket front ---------------------------------------------------- */
+.env-front {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  /* A straight top edge with cut corners: the front of a real envelope. */
+  /* Sits higher than the flap's shoulders (36%), so a sealed envelope never
+     shows its own lining through the join. */
+  clip-path: polygon(0 30%, 10% 25%, 90% 25%, 100% 30%, 100% 100%, 0 100%);
+  transition: transform 1.2s var(--ease-royal);
+}
+
+/* The bottom flap's fold lines, as light catching a crease. */
+.fold {
+  position: absolute;
+  bottom: 0;
+  width: 58%;
+  height: 46%;
+  pointer-events: none;
+}
+
+.fold-l {
+  left: 0;
+  background: linear-gradient(to top right, transparent 49.6%, rgba(255, 190, 170, 0.14) 49.8%, transparent 50.4%);
+}
+
+.fold-r {
+  right: 0;
+  background: linear-gradient(to top left, transparent 49.6%, rgba(255, 190, 170, 0.14) 49.8%, transparent 50.4%);
+}
+
+/* --- the flap ------------------------------------------------------------ */
+.env-flap {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  transform-origin: 50% 0%;
+  /* --lift runs 0 (sealed) to 1 (folded all the way back). The drag handler
+     writes it directly, so a finger moves the paper with no lag. */
+  --lift: 0;
+  transform: rotateX(calc(var(--lift) * -174deg));
+  will-change: transform;
+}
+
+.flap-skin {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 36%, 50% 64%, 0 36%);
+  background-color: var(--velvet);
+  background-image:
+    radial-gradient(120% 90% at 50% -20%, rgba(130, 20, 30, 0.38) 0%, transparent 62%),
+    linear-gradient(170deg, #581018 0%, #3d070e 100%);
+}
+
+/* A foil line along the two diagonal folds. Drawn as a stretched SVG so it
+   traces the clip-path exactly instead of approximating it with gradients. */
+.flap-edge {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* The lining behind the flap. Swapped in while the paper is edge-on, so the
+   change is never actually seen. */
+.flap-lining {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 36%, 50% 64%, 0 36%);
+  background: linear-gradient(170deg, #3a060d 0%, #250407 100%);
+  opacity: 0;
+  transition: opacity 0.12s linear;
+}
+
+.env-flap[data-side='in'] .flap-skin,
+.env-flap[data-side='in'] .foil-band,
+.env-flap[data-side='in'] .foil-corner,
+.env-flap[data-side='in'] .foil-crest,
+.env-flap[data-side='in'] .flap-run {
+  opacity: 0;
+  transition: opacity 0.12s linear;
+}
+
+.env-flap[data-side='in'] .flap-lining {
+  opacity: 1;
+}
+
+/* The envelope drops away once the card is clear. */
+.gate[data-phase='vortex'] .env-front,
+.gate[data-phase='card'] .env-front {
+  transform: translate3d(0, 55%, 0);
+}
+
+/* --- atmosphere ---------------------------------------------------------- */
+.candle {
+  position: absolute;
+  left: -10%;
+  bottom: -18%;
+  width: 70%;
+  height: 45%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(245, 166, 35, 0.3) 0%, transparent 65%);
+  animation: candle-flicker 5.5s ease-in-out infinite;
+  z-index: 25;
+}
+
+@keyframes candle-flicker {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  38% {
+    opacity: 0.78;
+    transform: scale(1.06);
+  }
+  61% {
+    opacity: 0.48;
+    transform: scale(0.98);
+  }
+}
+
+.raking-light {
+  position: absolute;
+  inset: -30% -60%;
+  z-index: 26;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 220, 190, 0.09) 47%,
+    rgba(255, 235, 210, 0.14) 50%,
+    rgba(255, 220, 190, 0.09) 53%,
+    transparent 62%
+  );
+  animation: rake 11s linear infinite;
+}
+
+@keyframes rake {
+  from {
+    transform: translate3d(-28%, 0, 0);
+  }
+  to {
+    transform: translate3d(28%, 0, 0);
+  }
+}
+
+/* --- the hint, the seal and the skip pill -------------------------------- */
+.tap-hint {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  z-index: 35;
+  margin: 0;
+  transform: translate3d(-50%, -50%, 0);
+  color: #ffeede;
+  font-size: clamp(1.6rem, 7vw, 2.1rem);
+  text-shadow: 0 2px 14px rgba(40, 4, 8, 0.7);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hint-breathe 3.4s ease-in-out infinite;
+}
+
+@keyframes hint-breathe {
+  0%,
+  100% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.seal-wrap {
+  position: absolute;
+  left: 50%;
+  top: 64%;
+  z-index: 36;
+  transform: translate3d(-50%, -50%, 0);
+}
+
+.gate[data-phase='sealed'] .tap-hint,
+.gate[data-phase='press'] .tap-hint {
+  opacity: 1;
+}
+
+.gate:not([data-phase='sealed']):not([data-phase='press']) .tap-hint,
+.gate:not([data-phase='lift']) .lift-hint,
+.gate:not([data-phase='sealed']):not([data-phase='press']) .skip-pill {
+  opacity: 0;
+  animation: none;
+  transition: opacity 0.3s ease-out;
+}
+
+.skip-pill {
+  position: absolute;
+  top: calc(var(--safe-t) + 14px);
+  right: calc(var(--safe-r) + 14px);
+  z-index: 38;
+  padding: 7px 13px;
+  border-radius: 999px;
+  color: rgba(248, 231, 168, 0.8);
+  background: rgba(24, 3, 6, 0.4);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: 0.5625rem;
+  letter-spacing: 0.2em;
+  transition: background 0.3s ease, opacity 0.3s ease;
+}
+
+.skip-pill:hover {
+  background: rgba(60, 8, 14, 0.75);
+}
+
+/* The pointing hand beside the seal. */
+.finger {
+  position: absolute;
+  right: 4px;
+  bottom: 2px;
+  width: 34px;
+  height: 34px;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 7px rgba(20, 2, 4, 0.55));
+  animation: finger-tap 2.6s var(--ease-royal) infinite;
+}
+
+@keyframes finger-tap {
+  0%,
+  62%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.9;
+  }
+  72% {
+    transform: translate3d(-5px, -7px, 0) scale(0.92);
+    opacity: 1;
+  }
+  82% {
+    transform: translate3d(-2px, -1px, 0) scale(1.02);
+  }
+}
+
+.gate:not([data-phase='sealed']) .finger {
+  opacity: 0;
+  animation: none;
+}
+
+/* ===========================================================================
+   THE SEAL ITSELF
+   ======================================================================== */
+.seal-root {
+  position: relative;
+  display: block;
+  border-radius: 50%;
+  /* The highlight tracks the device tilt or the cursor. */
+  --tilt-x: 0;
+  --tilt-y: 0;
+  transform: rotateY(calc(var(--tilt-x) * 7deg)) rotateX(calc(var(--tilt-y) * -7deg));
+  transition: transform 0.25s ease-out;
+  animation: seal-float 4.2s ease-in-out infinite;
+}
+
+@keyframes seal-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -5px;
+  }
+}
+
+.seal-monogram {
+  font-family: var(--font-caps), Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.seal-shadow {
+  animation: seal-shadow 4.2s ease-in-out infinite;
+}
+
+@keyframes seal-shadow {
+  0%,
+  100% {
+    opacity: 0.45;
+    rx: 46;
+  }
+  50% {
+    opacity: 0.3;
+    rx: 41;
+  }
+}
+
+/* The glint crosses the wax every three seconds. */
+.seal-glint {
+  animation: glint 3.2s var(--ease-royal) infinite;
+}
+
+@keyframes glint {
+  0%,
+  64% {
+    transform: translate3d(0, 0, 0) rotate(18deg);
+  }
+  88%,
+  100% {
+    transform: translate3d(260px, 0, 0) rotate(18deg);
+  }
+}
+
+/* Crack lines are hidden until they are drawn on. */
+.seal-cracks path {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+}
+
+.seal-root[data-phase='press'] {
+  animation: seal-press 0.14s ease-out forwards;
+}
+
+@keyframes seal-press {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 0.94;
+    rotate: -1.5deg;
+  }
+  100% {
+    scale: 0.955;
+    rotate: 0.8deg;
+  }
+}
+
+.seal-root[data-phase='crack'] .seal-cracks path {
+  animation: crack-draw 0.16s linear forwards;
+}
+
+.seal-root[data-phase='crack'] .seal-cracks path:nth-child(2) {
+  animation-delay: 0.03s;
+}
+.seal-root[data-phase='crack'] .seal-cracks path:nth-child(3) {
+  animation-delay: 0.05s;
+}
+.seal-root[data-phase='crack'] .seal-cracks path:nth-child(4) {
+  animation-delay: 0.07s;
+}
+.seal-root[data-phase='crack'] .seal-cracks path:nth-child(5) {
+  animation-delay: 0.1s;
+}
+.seal-root[data-phase='crack'] .seal-cracks path:nth-child(6) {
+  animation-delay: 0.12s;
+}
+
+@keyframes crack-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.seal-root[data-phase='crack'] {
+  animation: seal-shake 0.16s linear;
+}
+
+@keyframes seal-shake {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  25% {
+    translate: -2px 1px;
+  }
+  75% {
+    translate: 2px -1px;
+  }
+}
+
+/* Once it shatters, the canvas takes over and the SVG disappears. */
+.seal-root[data-phase='shatter'] {
+  opacity: 0;
+  animation: none;
+  transition: opacity 0.06s linear;
+}
+
+/* ===========================================================================
+   REDUCED MOTION
+   The gate still works; it simply crossfades instead of performing.
+   ======================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .env-flap,
+  .flap-skin {
+    animation: none !important;
+  }
+
+  .gate[data-phase='flap'] .env-flap,
+  .gate[data-phase='card'] .env-flap,
+  .gate[data-phase='vortex'] .env-flap {
+    opacity: 0;
+    transition: opacity 0.3s linear;
+  }
+
+  .candle,
+  .raking-light,
+  .seal-root,
+  .seal-glint,
+  .finger,
+  .seal-shadow {
+    animation: none !important;
+  }
+}
+
+/* ===========================================================================
+   FOIL AND PAPER
+   The flat version of this envelope read as a coloured rectangle. What makes
+   real stationery look expensive is layering: fibre in the paper, a crease
+   that catches light, foil worked into the folds, and a shadow where one
+   thickness of paper lies over another.
+   ======================================================================== */
+
+/* Laid-paper fibre on the flap, matching the pocket's. */
+.flap-skin::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--fibre);
+  background-size: 120px 120px;
+  opacity: 0.14;
+  mix-blend-mode: overlay;
+}
+
+/* Horizontal laid lines, the texture of handmade Indian paper. */
+.flap-skin::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 4px,
+    rgba(255, 220, 200, 0.016) 4px 5px
+  );
+}
+
+.foil-band {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.foil-corner {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  color: rgba(212, 175, 55, 0.42);
+  pointer-events: none;
+}
+
+.foil-corner-tl {
+  top: calc(var(--safe-t) + 52px);
+  left: 14px;
+}
+
+.foil-corner-tr {
+  top: calc(var(--safe-t) + 52px);
+  right: 14px;
+}
+
+/* The ambi run, set just inside each paper edge. */
+.flap-run,
+.front-run {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  width: 72%;
+  max-width: 320px;
+  height: auto;
+  color: rgba(212, 175, 55, 0.3);
+  pointer-events: none;
+}
+
+.flap-run {
+  top: calc(var(--safe-t) + 232px);
+  width: 60%;
+  max-width: 250px;
+}
+
+.front-run {
+  top: 4.5%;
+  color: rgba(212, 175, 55, 0.2);
+}
+
+/* One thickness of paper lying over another. */
+.flap-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  clip-path: polygon(0 0, 100% 0, 100% 9%, 50% 49%, 0 9%);
+  background: linear-gradient(to bottom, rgba(18, 2, 5, 0.55) 0%, rgba(18, 2, 5, 0.18) 55%, transparent 100%);
+  filter: blur(7px);
+  transition: opacity 0.7s var(--ease-royal);
+}
+
+/* Once the flap lifts, its shadow goes with it. */
+.gate[data-phase='flap'] .flap-shadow,
+.gate[data-phase='card'] .flap-shadow,
+.gate[data-phase='vortex'] .flap-shadow {
+  opacity: 0;
+}
+
+/* Gold dust hanging in the air in front of the paper. */
+.motes {
+  position: absolute;
+  inset: 0;
+  z-index: 27;
+  pointer-events: none;
+}
+
+.motes span {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 244, 214, 0.9) 0%, rgba(212, 175, 55, 0.5) 45%, transparent 70%);
+  animation-name: mote-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes mote-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(14px, -42px, 0);
+    opacity: 0.6;
+  }
+  82% {
+    opacity: 0.5;
+  }
+}
+
+/* ===========================================================================
+   CHOREOGRAPHY FIXES
+   ======================================================================== */
+
+/* The card has to come out in FRONT of the pocket once its top edge is clear,
+   or it stays trapped behind the paper and only a sliver ever shows.
+   z-index steps rather than tweens, which is exactly what is wanted here. */
+.gate[data-phase='card'] .env-card,
+.gate[data-phase='vortex'] .env-card {
+  animation: card-lift 1.5s var(--ease-royal) forwards;
+}
+
+@keyframes card-lift {
+  0%,
+  34% {
+    z-index: 10;
+  }
+  35%,
+  100% {
+    z-index: 25;
+  }
+}
+
+/* Keep the compositor ready for the two biggest moves. */
+.env-card,
+.env-front {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motes span,
+  .foil-band {
+    animation: none !important;
+    opacity: 0.4;
+  }
+}
+
+.foil-crest {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--safe-t) + 66px);
+  translate: -50% 0;
+  display: flex;
+  justify-content: center;
+  width: 142px;
+  height: 154px;
+  color: rgba(212, 175, 55, 0.5);
+  pointer-events: none;
+}
+
+/* Edges of a real object: the paper is not flush with the screen. */
+.gate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 37;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 50px rgba(20, 2, 5, 0.55),
+    inset 0 0 120px rgba(20, 2, 5, 0.35);
+}
+
+/* ===========================================================================
+   PULLING THE FLAP
+   ======================================================================== */
+.lift-hint {
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  z-index: 36;
+  translate: -50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  color: rgba(248, 231, 168, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-royal);
+}
+
+.gate[data-phase='lift'] .lift-hint {
+  opacity: 1;
+  pointer-events: auto;
+  animation: lift-beckon 2.1s var(--ease-royal) infinite;
+}
+
+.lift-hint svg {
+  width: 26px;
+  height: 15px;
+}
+
+.lift-hint span {
+  font-size: 0.5625rem;
+  letter-spacing: 0.22em;
+  text-shadow: 0 2px 10px rgba(30, 3, 7, 0.8);
+}
+
+@keyframes lift-beckon {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.72;
+  }
+  45% {
+    transform: translate3d(0, -9px, 0);
+    opacity: 1;
+  }
+}
+
+/* While the flap can be pulled, the whole gate takes the gesture. */
+.gate[data-phase='lift'] {
+  cursor: grab;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lift-hint {
+    animation: none !important;
+  }
+}
+
+.crest-niche {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.crest-deity {
+  position: relative;
+  z-index: 1;
+  margin-top: 30px;
+  color: inherit;
+}
+
+.crest-base {
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 100%;
+  height: auto;
+}
