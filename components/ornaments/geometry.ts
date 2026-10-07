@@ -14,8 +14,15 @@ interface Pt {
  * A two-centred pointed arch: the left and right arcs are struck from centres
  * set in from each jamb, which is what gives Rajput arches their lift compared
  * with a plain semicircle.
+ *
+ * The natural rise of this construction is about 0.71 of the span, which for
+ * most sensible boxes puts the apex *above* the top of the viewBox and quietly
+ * clips the crown off. So once the points are struck, the rise is compressed
+ * to fit whatever height is actually available, with the springing line held
+ * where it is. The arch keeps its character and stops depending on the caller
+ * having picked a compatible springY.
  */
-function archPoints(w: number, springY: number, lobes: number, k = 0.25): Pt[] {
+function archPoints(w: number, springY: number, lobes: number, k = 0.25, topMargin = 0): Pt[] {
   const cx = w * (1 - k);
   const r = w * (1 - k);
   const start = Math.PI; // the springing point, due left of the centre
@@ -27,6 +34,12 @@ function archPoints(w: number, springY: number, lobes: number, k = 0.25): Pt[] {
   for (let i = 0; i <= lobes; i++) {
     const a = start + ((end - start) * i) / lobes;
     pts.push({ x: cx + r * Math.cos(a), y: springY + r * Math.sin(a) });
+  }
+
+  const crown = pts[pts.length - 1].y;
+  if (crown < topMargin && springY > crown) {
+    const squash = (springY - topMargin) / (springY - crown);
+    for (const pt of pts) pt.y = springY - (springY - pt.y) * squash;
   }
   return pts;
 }
@@ -40,7 +53,13 @@ const n = (v: number) => Math.round(v * 100) / 100;
  * foils you see over the jharokhas of the City Palace.
  */
 export function cuspedArchPath(w: number, h: number, springY: number, lobes = 5, inset = 0): string {
-  const left = archPoints(w - inset * 2, springY, lobes).map((p) => ({ x: p.x + inset, y: p.y }));
+  // Leave room for the stroke as well as the inset, so the crown is not shaved
+  // off by the edge of the box.
+  const topMargin = inset + 1.5;
+  const left = archPoints(w - inset * 2, springY, lobes, 0.25, topMargin).map((p) => ({
+    x: p.x + inset,
+    y: p.y,
+  }));
   const apex = left[left.length - 1];
 
   /**
