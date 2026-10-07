@@ -191,15 +191,44 @@ use your own artwork, put a transparent PNG in `public/img/` and set
 2. Point the records Vercel shows you at your registrar
 3. HTTPS is issued automatically
 
-### Then — and this matters for WhatsApp
+### Then set your domain, which is what makes the preview work
 
-Set `seo.siteUrl` in the config to your real domain and redeploy. The link
-preview image is built from it, and a wrong value means no preview.
+Open `config/wedding.config.ts` and set:
 
-Check it with <https://developers.facebook.com/tools/debug/> or by sending the
-link to yourself on WhatsApp. You should see a velvet card with both names, the
-date and the city. If WhatsApp shows a stale preview, it has cached the old one —
-add `?v=2` to the link once to force a refresh.
+```ts
+seo: {
+  siteUrl: 'https://your-real-domain.in',   // <- this one
+}
+```
+
+Redeploy. **Nothing else is needed for the share preview** — the card is
+generated at build time by `app/opengraph-image.tsx` and the tags are already
+on the page.
+
+Why this one line matters: Open Graph image URLs have to be absolute. Next
+builds them from `siteUrl`, so if it still says `vaibhavweddspriyal.in` then
+WhatsApp goes looking for the picture on a domain that is not yours, finds
+nothing, and shows a bare link.
+
+#### Checking it
+
+Send the link to yourself on WhatsApp, or paste it into
+<https://developers.facebook.com/tools/debug/> and press **Scrape Again**.
+You should get a velvet card with the drawing of you both, your names, the
+date, the city and the hashtag.
+
+If a stale preview turns up, WhatsApp has cached the old one. Add `?v=2` to the
+link once to force a fresh fetch; the site ignores the parameter.
+
+#### Changing the picture
+
+Everything on the card comes from the config, so editing your names, the date,
+the city, the hashtag or `couple.illustration` changes it on the next deploy.
+The whole layout lives in `app/opengraph-image.tsx` if you want to rearrange it.
+
+Keep the generated file under about 300 KB. WhatsApp gets unreliable above
+that, and the card is a PNG, which is why its background is a single flat
+gradient rather than the layered one the site uses.
 
 ---
 
