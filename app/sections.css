@@ -716,51 +716,103 @@
 }
 
 /* ===========================================================================
-   INTERLUDE
-   One line on velvet between the venue and the RSVP, crowned by the mandala.
-   It needs height: the scrims take roughly 120px off each end, so a short
-   section leaves almost no velvet and the sentence floats in a thin band.
+   THE INVOCATION
+   The mandala crowns the section full-bleed, with the seated figure in the
+   arch's opening so it reads as enshrined rather than laid on top.
    ======================================================================== */
-.interlude {
+.mantra {
   display: grid;
   place-items: center;
-  min-height: 74dvh;
-  padding-block: clamp(120px, 26vw, 168px);
+  min-height: 80dvh;
+  padding-block: clamp(100px, 22vw, 140px) clamp(84px, 18vw, 116px);
 }
 
-.interlude-inner {
+.mantra-inner {
   position: relative;
   z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  width: min(90%, 340px);
+  width: 100%;
   text-align: center;
 }
 
-.interlude-mandala {
+/* The reveal wrapper is the flex item. Left alone it shrink-wraps, and the
+   image's percentage width then resolves against a box the image is itself
+   sizing, which collapses it. */
+.mantra-crown {
+  align-self: stretch;
   width: 100%;
-  height: auto;
-  /* The arch sweeps out to the corners, so it carries past the text column
-     and the line sits in its opening. */
+}
+
+.mantra-shrine {
+  position: relative;
+  display: block;
+  /* Bleeds past the section's own padding to the full width of the column. */
+  width: calc(100% + 2 * max(20px, var(--safe-l)));
+  margin-inline: calc(-1 * max(20px, var(--safe-l)));
+}
+
+.mantra-mandala {
+  width: 100%;
   max-width: none;
-  margin-bottom: -6px;
+  height: auto;
 }
 
-.interlude-line {
-  margin: 10px 0 0;
-  /* A sentence spoken aloud, a step below the names. */
-  font-size: clamp(1.5rem, 7.2vw, 1.98rem);
-  line-height: 1.44;
+/* Seated in the opening the arch makes, not floating over the pattern. */
+.mantra-deity {
+  position: absolute;
+  left: 50%;
+  /* Seated inside the arch's opening, just above its springing line. */
+  bottom: 3%;
+  translate: -50% 0;
   color: var(--gold-1);
-  text-wrap: balance;
+  filter: drop-shadow(0 2px 10px rgba(20, 2, 6, 0.7));
 }
 
-.interlude-rule {
-  margin-top: 20px;
+.mantra-title {
+  margin: 30px 0 0;
+  font-size: clamp(1.5rem, 7.2vw, 1.92rem);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--gold-1);
+}
+
+.mantra-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 16px 0 0;
+  max-width: 340px;
+  font-size: clamp(0.94rem, 4.3vw, 1.08rem);
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--gold-1) 92%, transparent);
+}
+
+.mantra-rule {
+  margin-top: 22px;
   color: var(--gold-2);
   opacity: 0.85;
+}
+
+.mantra-rule-last {
+  margin-top: 26px;
+  opacity: 0.6;
+}
+
+.mantra-salute {
+  margin: 20px 0 0;
+  font-size: clamp(1.08rem, 5vw, 1.28rem);
+  color: var(--gold-1);
+}
+
+.mantra-meaning {
+  margin: 14px auto 0;
+  max-width: 32ch;
+  font-size: 0.98rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--ivory) 88%, transparent);
 }
 
 /* ===========================================================================

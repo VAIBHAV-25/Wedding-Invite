@@ -11,7 +11,7 @@ import { Blessing } from '@/components/sections/Blessing';
 import { Hero } from '@/components/sections/Hero';
 import { ScratchDate } from '@/components/sections/ScratchDate';
 import { Countdown } from '@/components/sections/Countdown';
-import { Interlude } from '@/components/sections/Interlude';
+import { Mantra } from '@/components/sections/Mantra';
 import { Memories } from '@/components/sections/Memories';
 import { Festivities } from '@/components/sections/Festivities';
 import { Venue } from '@/components/sections/Venue';
@@ -117,9 +117,8 @@ export function Invitation({ config: committed }: { config: WeddingConfig }) {
           {features.gallery && <Memories config={config} />}
           <Festivities config={config} />
           <Venue config={config} />
-          {/* A breath before the ask: the guest has the when and the where,
-              and this is the one place we simply say something. */}
-          <Interlude config={config} />
+          {/* The invocation, just before the ask. */}
+          <Mantra config={config} />
           <Rsvp config={config} />
           {features.shagun && <Shagun config={config} />}
           <Closing config={config} />

@@ -53,8 +53,17 @@ export const wedding: WeddingConfig = {
       'O Lord of the curved trunk, radiant as a million suns, keep our path free of obstacles, always.',
     introText:
       'With the blessings of Lord Ganesha and the elders of our two families, we invite you to the marriage of',
-    // Shown large on velvet, just before guests are asked to reply.
-    interlude: 'All of this comes down to one thing: who is in the room.',
+    // Set on velvet between the venue and the RSVP. Empty `lines` hides it.
+    mantra: {
+      title: 'णमोकार महामंत्र',
+      lines: [
+        'णमो अरिहंताणं। णमो सिद्धाणं। णमो आयरियाणं।',
+        'णमो उवज्झायाणं। णमो लोए सव्वसाहूणं।',
+      ],
+      salutation: '॥ जय जिनेंद्र ॥',
+      meaning:
+        'Seeking the divine blessings of the Jinendras as we begin our sacred journey together.',
+    },
     closingLine: 'Your presence is the blessing we are asking for.',
     // 'en' | 'hi' | 'both' — 'both' shows the transliteration and English lines.
     language: 'both',

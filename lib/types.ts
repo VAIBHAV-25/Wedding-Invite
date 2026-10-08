@@ -41,9 +41,18 @@ export interface Invitation {
   shlokaTransliteration: string;
   shlokaEnglish: string;
   introText: string;
-  /** One line, set large on velvet between the venue and the RSVP. Empty
-   *  hides the section. */
-  interlude: string;
+  /** The invocation set on velvet between the venue and the RSVP.
+   *  Leave `lines` empty to hide the whole section. */
+  mantra: {
+    /** Heading above the mantra, e.g. the mantra's name. */
+    title: string;
+    /** One entry per printed line. */
+    lines: string[];
+    /** The short salutation under it. */
+    salutation: string;
+    /** A line of English beneath, saying what is being asked for. */
+    meaning: string;
+  };
   closingLine: string;
   language: Language;
 }
