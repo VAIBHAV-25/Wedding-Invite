@@ -123,6 +123,10 @@ lazy-loaded automatically.
 
 4. Point `music.defaultTrackId` at that track's `id`
 
+The track in there now is a trimmed excerpt. The original was 4:05 and
+3.9 MB, which is a lot to pull down on a phone, so it is cut to the first
+108 seconds and re-encoded as AAC at about 1.6 MB, and it loops.
+
 Nothing plays until a guest taps the wax seal — that tap is what unlocks audio
 on a phone. The floating button mutes in one tap and remembers the choice.
 Set `defaultTrackId: 'none'` for a silent invitation.
@@ -324,7 +328,6 @@ rather count to something else.
 - [ ] 8 to 30 photos, with a caption for each
 - [ ] Your real love-story milestones (the five in there now are placeholders)
 - [ ] The WhatsApp number RSVPs should go to — currently a dummy
-- [ ] A music track you have the rights to — or say "none"
 - [ ] A phone number for the resort, if guests should be able to call about
       rooms. The stay block is live but has no number on it
 - [ ] Latitude and longitude for Monsoon Resort, if you want pin-accurate

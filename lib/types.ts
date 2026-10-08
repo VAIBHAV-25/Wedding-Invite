@@ -182,6 +182,8 @@ export interface Travel {
   enabled: boolean;
   airport: string;
   station: string;
+  /** One line about where to stay. Use `hotels` instead to list several. */
+  stay: string;
   hotels: Hotel[];
   parking: string;
 }

@@ -142,7 +142,7 @@ export const wedding: WeddingConfig = {
       subtitle: 'The rings',
       startISO: '2027-01-30T12:00:00+05:30',
       endISO: '2027-01-30T13:00:00+05:30',
-      artwork: '/img/events/engagement.jpeg',
+      artwork: '/img/events/engagement-v2.jpg',
       artworkTone: 'engagement',
       description: 'Two families, one promise, and a great deal of photography.',
       dressCode: '',
@@ -182,7 +182,7 @@ export const wedding: WeddingConfig = {
       subtitle: 'The night everyone dances',
       startISO: '2027-01-30T18:00:00+05:30',
       endISO: '2027-01-30T23:30:00+05:30',
-      artwork: '/img/events/sangeet.jpeg',
+      artwork: '/img/events/sangeet-v2.jpg',
       artworkTone: 'sangeet',
       description: 'Our families have been rehearsing in secret. Come and judge them.',
       dressCode: '',
@@ -345,20 +345,21 @@ export const wedding: WeddingConfig = {
         source: 'preset',
       },
       {
-        id: 'shehnai',
-        title: 'Shehnai, traditional',
-        // Add your own licensed file here, e.g. '/audio/shehnai.mp3'
-        src: '',
-        licence: 'Add your own licensed track',
-        startSec: 0,
-        endSec: 0,
-        fadeInSec: 3,
-        fadeOutSec: 2,
-        volume: 0.55,
-        source: 'preset',
+        id: 'vaaroon',
+        title: 'Vaaroon',
+        src: '/audio/vaaroon.m4a',
+        licence: 'Supplied by the couple. Shreya Ghoshal, Romy, Anand B.',
+        // The file is already cut to this excerpt, so the loop runs almost
+        // its whole length; these trim the last breath off either end.
+        startSec: 0.4,
+        endSec: 106,
+        fadeInSec: 3.5,
+        fadeOutSec: 2.5,
+        volume: 0.42,
+        source: 'upload',
       },
     ],
-    defaultTrackId: 'shehnai',
+    defaultTrackId: 'vaaroon',
     loop: true,
     // Seconds from track start. The hero name reveal finishes on the last cue.
     introCues: [0.5, 2.0, 3.6],
@@ -420,14 +421,10 @@ export const wedding: WeddingConfig = {
       'Maharana Pratap Airport, Dabok. About 25 to 27 km, roughly 35 to 45 minutes by road via NH48 and the Debari bypass.',
     station:
       'Udaipur City Railway Station. About 8 to 8.5 km, roughly 20 to 25 minutes by road depending on traffic.',
-    hotels: [
-      {
-        name: 'Monsoon Resort',
-        phone: '',
-        mapsUrl: 'https://maps.app.goo.gl/Tjz5AUoYGQpeQwM99',
-        note: 'Rooms are available at the resort itself. None are held or reserved by default, so please book directly.',
-      },
-    ],
+    stay: 'Rooms are available at the resort itself.',
+    // Use this instead of `stay` to list several places, with phone numbers
+    // and map links.
+    hotels: [],
     parking: 'Complimentary self-parking on site for all guests.',
   },
 

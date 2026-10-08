@@ -62,11 +62,20 @@ class MusicPlayer {
 
   subscribe(fn: (playing: boolean) => void): () => void {
     this.listeners.add(fn);
+    // Hand the current state straight to a listener that arrives late. The
+    // sound button only mounts once the envelope has finished opening, which
+    // is seconds after the tap that started the music, so without this it
+    // never hears the one emit that mattered and sits on its initial value.
+    fn(this.playingNow);
     return () => this.listeners.delete(fn);
   }
 
+  private get playingNow(): boolean {
+    return this.started && !this.muted && this.hasTrack;
+  }
+
   private emit(): void {
-    const playing = this.started && !this.muted && this.hasTrack;
+    const playing = this.playingNow;
     this.listeners.forEach((fn) => fn(playing));
   }
 
@@ -122,49 +131,77 @@ class MusicPlayer {
     if (el.currentTime >= end - 0.05) this.restart();
   }
 
+  /**
+   * Seeking a media element that has no metadata yet throws, so this waits
+   * for the element to know its own duration before moving the playhead.
+   */
+  private seekToStart(): void {
+    const el = this.el;
+    const t = this.track;
+    if (!el || !t || t.startSec <= 0) return;
+    const apply = () => {
+      try {
+        el.currentTime = t.startSec;
+      } catch {
+        /* still not ready; leaving it at zero is harmless */
+      }
+    };
+    if (el.readyState >= 1) apply();
+    else el.addEventListener('loadedmetadata', apply, { once: true });
+  }
+
   private restart(): void {
     const el = this.el;
     const t = this.track;
     if (!el || !t) return;
-    el.currentTime = t.startSec;
+    this.seekToStart();
     this.ramp(this.targetVolume, Math.min(t.fadeInSec, 1.2));
     if (!el.paused) return;
     void el.play().catch(() => undefined);
   }
 
   /**
-   * Call from inside a tap handler. Creates the graph, resumes the context and
-   * fades the track in. Safe to call more than once.
+   * Call from inside a tap handler. Safe to call more than once.
+   *
+   * Order matters more than it looks. A tap grants transient user activation,
+   * and that activation is spent by the first `await`. Resuming the
+   * AudioContext first and only then calling play() meant play() was no
+   * longer running inside the gesture, and Chrome refused it — so the music
+   * never started for anyone. Everything up to play() is now synchronous, and
+   * the resume is fired off without waiting on it.
    */
   async unlock(): Promise<void> {
-    const c = audioContext();
     const el = this.el;
     const t = this.track;
     this.muted = readMuted();
-    if (!c || !el || !t) {
+    if (!el || !t) {
       this.started = true;
       this.emit();
       return;
     }
-    if (c.state === 'suspended') await c.resume().catch(() => undefined);
 
-    if (!this.gain) {
+    const c = audioContext();
+    if (c && !this.gain) {
       try {
         const source = c.createMediaElementSource(el);
         this.gain = c.createGain();
         this.gain.gain.value = 0.0001;
         source.connect(this.gain).connect(c.destination);
       } catch {
-        // Fall back to plain element volume if the graph cannot be built.
+        // Already routed, or the graph could not be built: fall back to the
+        // element's own volume.
         this.gain = null;
       }
     }
-
-    el.currentTime = t.startSec;
     if (!this.gain) el.volume = this.targetVolume;
+
+    const playing = el.play();
+    if (c && c.state === 'suspended') void c.resume().catch(() => undefined);
+
     try {
-      await el.play();
+      await playing;
       this.started = true;
+      this.seekToStart();
       this.ramp(this.targetVolume, t.fadeInSec);
     } catch {
       this.started = false;

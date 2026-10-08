@@ -88,6 +88,12 @@ export function Venue({ config }: { config: WeddingConfig }) {
                   <dd>{travel.station}</dd>
                 </div>
               )}
+              {travel.stay && (
+                <div>
+                  <dt>Staying</dt>
+                  <dd>{travel.stay}</dd>
+                </div>
+              )}
               {travel.parking && (
                 <div>
                   <dt>Parking</dt>
