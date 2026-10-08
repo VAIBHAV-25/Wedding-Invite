@@ -6,14 +6,13 @@ import { mergeConfig, readDraft, writeDraft, clearDraft } from '@/lib/content';
 import { toConfigFile, download } from '@/lib/exportConfig';
 import { whatsappUrl, shareMessage } from '@/lib/share';
 import { Text, Area, Pick, Toggle, Colour, Group, Row } from './fields';
-import type { WeddingConfig, WeddingEvent, StoryMilestone, GalleryItem } from '@/lib/types';
+import type { WeddingConfig, WeddingEvent, GalleryItem } from '@/lib/types';
 
-type Tab = 'content' | 'events' | 'story' | 'photos' | 'look' | 'guests' | 'export';
+type Tab = 'content' | 'events' | 'photos' | 'look' | 'guests' | 'export';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'content', label: 'The invitation' },
   { id: 'events', label: 'Celebrations' },
-  { id: 'story', label: 'Our story' },
   { id: 'photos', label: 'Photos & music' },
   { id: 'look', label: 'Look & feel' },
   { id: 'guests', label: 'Guest links' },
@@ -354,7 +353,6 @@ export function Studio() {
                 {(
                   [
                     ['countdown', 'Countdown'],
-                    ['story', 'Our story'],
                     ['gallery', 'Photos'],
                     ['shagun', 'Shagun (UPI)'],
                     ['share', 'Share buttons'],
@@ -447,52 +445,6 @@ export function Studio() {
                 onClick={() => set('events', [...config.events, blankEvent(events.length + 1)])}
               >
                 Add a celebration
-              </button>
-            </>
-          )}
-
-          {tab === 'story' && (
-            <>
-              {config.story.map((m, i) => (
-                <Group key={i} title={`${m.year}: ${m.title}`}>
-                  <Row>
-                    <Text
-                      label="Year"
-                      value={m.year}
-                      onChange={(v) =>
-                        set('story', config.story.map((x, j) => (i === j ? { ...x, year: v } : x)))
-                      }
-                    />
-                    <Text
-                      label="Title"
-                      value={m.title}
-                      onChange={(v) =>
-                        set('story', config.story.map((x, j) => (i === j ? { ...x, title: v } : x)))
-                      }
-                    />
-                  </Row>
-                  <Area
-                    label="Two lines"
-                    value={m.text}
-                    onChange={(v) => set('story', config.story.map((x, j) => (i === j ? { ...x, text: v } : x)))}
-                  />
-                  <button
-                    type="button"
-                    className="danger"
-                    onClick={() => set('story', config.story.filter((_, j) => j !== i))}
-                  >
-                    Remove
-                  </button>
-                </Group>
-              ))}
-              <button
-                type="button"
-                className="studio-add"
-                onClick={() =>
-                  set('story', [...config.story, { year: '', title: 'New moment', text: '', photo: '' } as StoryMilestone])
-                }
-              >
-                Add a moment
               </button>
             </>
           )}

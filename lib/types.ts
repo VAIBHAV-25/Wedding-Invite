@@ -41,6 +41,9 @@ export interface Invitation {
   shlokaTransliteration: string;
   shlokaEnglish: string;
   introText: string;
+  /** One line, set large on velvet between the venue and the RSVP. Empty
+   *  hides the section. */
+  interlude: string;
   closingLine: string;
   language: Language;
 }
@@ -216,7 +219,6 @@ export interface Features {
   reactions: boolean;
   guestWishes: boolean;
   countdown: boolean;
-  story: boolean;
   gallery: boolean;
   shagun: boolean;
   share: boolean;

@@ -133,6 +133,13 @@ Set `defaultTrackId: 'none'` for a silent invitation.
 
 **Only use music you have the right to use.** No film songs are bundled.
 
+### The line before the RSVP
+
+`invitation.interlude` is the single sentence set large on velvet between the
+venue and the RSVP. It is the one place on the page where you simply say
+something, rather than stating a fact or asking for one. Leave it empty and
+the section disappears.
+
 ### The couple's illustration
 
 `couple.illustration` points at the drawing shown in the invitation just above
@@ -249,9 +256,9 @@ app/
   admin/                the Content Studio
 components/
   gate/                 envelope, wax seal, shard physics, vortex
-  ornaments/            the SVG kit — arches, paisley, deities, calligraphy
-  sections/             blessing, hero, date, countdown, story, photos,
-                        festivities, venue, RSVP, shagun, closing
+  ornaments/            the SVG kit: arches, paisley, deities, calligraphy
+  sections/             blessing, hero, date, countdown, photos, festivities,
+                        venue, interlude, RSVP, closing
   ui/                   petals, sound, reactions, reveals, placeholders
 config/wedding.config.ts   all of your content
 lib/                    dates, maps, calendar, audio, share, hooks
@@ -326,7 +333,6 @@ rather count to something else.
 - [ ] End times — I have assumed Mehendi to 4:00 pm, Sangeet to 11:30 pm,
       Reception to 11:00 pm, and the fere running to about 2:00 am
 - [ ] 8 to 30 photos, with a caption for each
-- [ ] Your real love-story milestones (the five in there now are placeholders)
 - [ ] The WhatsApp number RSVPs should go to — currently a dummy
 - [ ] A phone number for the resort, if guests should be able to call about
       rooms. The stay block is live but has no number on it

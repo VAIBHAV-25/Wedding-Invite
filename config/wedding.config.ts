@@ -53,6 +53,8 @@ export const wedding: WeddingConfig = {
       'O Lord of the curved trunk, radiant as a million suns, keep our path free of obstacles, always.',
     introText:
       'With the blessings of Lord Ganesha and the elders of our two families, we invite you to the marriage of',
+    // Shown large on velvet, just before guests are asked to reply.
+    interlude: 'All of this comes down to one thing: who is in the room.',
     closingLine: 'Your presence is the blessing we are asking for.',
     // 'en' | 'hi' | 'both' — 'both' shows the transliteration and English lines.
     language: 'both',
@@ -278,39 +280,12 @@ export const wedding: WeddingConfig = {
     },
   ],
 
-  /* ---- Our story ---------------------------------------------------------- */
-  story: [
-    {
-      year: '2019',
-      title: 'A wrong platform',
-      text: 'We both got on the 6:40 to Jaipur by mistake. Neither of us got off.',
-      photo: '',
-    },
-    {
-      year: '2021',
-      title: 'The long year',
-      text: 'Two cities, one video call every night, and a shared list of places to go.',
-      photo: '',
-    },
-    {
-      year: '2023',
-      title: 'Udaipur, by accident',
-      text: 'We came for a friend’s wedding and spent the whole evening on the ghat steps.',
-      photo: '',
-    },
-    {
-      year: '2025',
-      title: 'The question',
-      text: 'Asked on the same platform, nearly six years later. The answer took no time at all.',
-      photo: '',
-    },
-    {
-      year: '2027',
-      title: 'And now, you',
-      text: 'The part we have been looking forward to most: all of you, in one place.',
-      photo: '',
-    },
-  ],
+  /* ---- Our story ----------------------------------------------------------
+   * Not shown. The timeline was replaced by the single line in
+   * `invitation.interlude`. Put milestones back here and re-add the Journey
+   * section if you want it again.
+   * ------------------------------------------------------------------------ */
+  story: [],
 
   /* ---- Photographs --------------------------------------------------------
    * Drop your images in /public/img and reference them as '/img/your-file.jpg',
@@ -474,7 +449,6 @@ export const wedding: WeddingConfig = {
     // Needs somewhere to store messages, so it is off in this no-backend build.
     guestWishes: false,
     countdown: true,
-    story: true,
     gallery: true,
     shagun: false,
     share: true,

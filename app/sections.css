@@ -716,69 +716,57 @@
 }
 
 /* ===========================================================================
-   JOURNEY
+   INTERLUDE
+   One line on velvet between the venue and the RSVP. Spare on purpose: it is
+   a breath after nine ceremonies and a map, not another block to read.
    ======================================================================== */
-.journey {
+.interlude {
+  display: grid;
+  place-items: center;
+  min-height: 56dvh;
+  padding-block: clamp(96px, 22vw, 136px);
+}
+
+.interlude-inner {
   position: relative;
-  max-width: 420px;
-  margin: 0 auto;
-  padding-left: 46px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  max-width: 330px;
+  text-align: center;
 }
 
-.thread {
-  position: absolute;
-  left: 8px;
-  top: 0;
-  width: 34px;
-  height: 100%;
-  pointer-events: none;
+.interlude-rule {
+  color: var(--gold-2);
 }
 
-.milestones {
+.interlude-line {
   margin: 0;
-  padding: 0;
-  list-style: none;
+  /* Large, but not as large as the names: this is a sentence, not a title. */
+  font-size: clamp(1.6rem, 7.6vw, 2.1rem);
+  line-height: 1.42;
+  color: var(--gold-1);
+  text-wrap: balance;
 }
 
-.milestone {
-  position: relative;
-  padding: 0 0 38px;
+.interlude-foot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--gold-2);
+  opacity: 0.75;
 }
 
-/* Without this the thread carries on past the final knot into empty space. */
-.milestones li:last-child .milestone {
-  padding-bottom: 0;
+.interlude-hair {
+  width: 84px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-2), transparent);
 }
 
-.knot {
-  position: absolute;
-  left: -43px;
-  top: 7px;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold-2) 18%, transparent);
-}
-
-.milestone-year {
-  margin: 0 0 6px;
-  color: var(--gold-3);
-}
-
-.milestone-title {
-  margin: 0 0 7px;
-  font-size: 1.5rem;
-  color: var(--velvet);
-}
-
-.milestone-text {
-  margin: 0;
-  font-size: 0.95rem;
-  font-style: italic;
-  max-width: 30ch;
-  margin-inline: 0;
-  color: color-mix(in srgb, var(--ink) 72%, transparent);
+.interlude-flip {
+  transform: scaleX(-1);
 }
 
 /* ===========================================================================
@@ -1987,12 +1975,6 @@
   background-image:
     radial-gradient(110% 60% at 50% 0%, color-mix(in srgb, var(--marigold) 26%, transparent) 0%, transparent 72%),
     radial-gradient(85% 52% at 96% 100%, color-mix(in srgb, var(--petal) 26%, transparent) 0%, transparent 72%);
-}
-
-#story.ivory-field {
-  background-image:
-    radial-gradient(108% 58% at 50% 2%, color-mix(in srgb, var(--petal) 38%, transparent) 0%, transparent 72%),
-    radial-gradient(82% 48% at 2% 96%, color-mix(in srgb, var(--marigold) 16%, transparent) 0%, transparent 70%);
 }
 
 #rsvp.ivory-field {
