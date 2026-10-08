@@ -7,8 +7,9 @@ import type { WeddingConfig } from '@/lib/types';
 /**
  * The invocation, set on velvet between the venue and the RSVP.
  *
- * The mandala crowns it full-bleed and the seated Tirthankara sits in the
- * arch's opening, so the figure reads as enshrined rather than pasted on top.
+ * The mandala crowns it full-bleed and the seated Tirthankara stands beneath
+ * the arch, so the lines of the artwork stay clear of the lines of the
+ * pattern.
  * Everything under it is centred on one column: the mantra's name, the mantra
  * itself, the salutation, and a line of English saying what is being asked
  * for.
@@ -33,15 +34,18 @@ export function Mantra({ config }: { config: WeddingConfig }) {
               className="mantra-mandala"
               aria-hidden="true"
             />
-            <Image
-              src="/img/mahavira-gold.png"
-              alt="Lord Mahavira seated in meditation"
-              width={659}
-              height={900}
-              sizes="(max-width: 700px) 32vw, 140px"
-              className="mantra-deity"
-            />
           </span>
+        </Reveal>
+
+        <Reveal variant="scale" delay={80}>
+          <Image
+            src="/img/mahavira-gold.png"
+            alt="Lord Mahavira seated in meditation"
+            width={659}
+            height={900}
+            sizes="(max-width: 700px) 46vw, 210px"
+            className="mantra-deity"
+          />
         </Reveal>
 
         {m.title && (
