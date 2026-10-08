@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { SparkleDivider } from '@/components/ornaments';
-import { MahaviraMotif } from '@/components/ornaments/deities';
 import { Reveal } from '@/components/ui/Reveal';
 import { Bridge } from '@/components/ui/Bridge';
 import type { WeddingConfig } from '@/lib/types';
@@ -34,7 +33,14 @@ export function Mantra({ config }: { config: WeddingConfig }) {
               className="mantra-mandala"
               aria-hidden="true"
             />
-            <MahaviraMotif size={158} className="mantra-deity" />
+            <Image
+              src="/img/mahavira-gold.png"
+              alt="Lord Mahavira seated in meditation"
+              width={659}
+              height={900}
+              sizes="(max-width: 700px) 32vw, 140px"
+              className="mantra-deity"
+            />
           </span>
         </Reveal>
 
