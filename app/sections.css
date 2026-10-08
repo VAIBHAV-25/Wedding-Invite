@@ -29,9 +29,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  /* Taller than it looks like it needs to be: a short scrim has to fall off
-     steeply, and a steep fall-off is exactly what reads as a visible edge. */
-  height: 120px;
+  height: clamp(44px, 11vw, 60px);
   z-index: 3;
   pointer-events: none;
 }
@@ -46,11 +44,11 @@
   background: linear-gradient(to top, var(--scrim-ivory));
 }
 
-/* The garland hangs in front of the scrim, so the scrim reaches past it. */
+/* The garland hangs in front of the scrim, so this one reaches past it. */
 .sec-dark .bridge-top,
 .hero .bridge-top,
 .closing .bridge-top {
-  height: 150px;
+  height: clamp(76px, 19vw, 100px);
 }
 
 .sec-head {

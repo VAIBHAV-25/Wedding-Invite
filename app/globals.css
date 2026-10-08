@@ -8,28 +8,21 @@
    whole site by writing to :root at runtime.
    ======================================================================== */
 :root {
-  /* An eased ivory scrim, used to blend a velvet section into the ivory above
-     or below it. A plain two-stop fade to transparent reads as a visible band
-     because its alpha falls off in a straight line; this one is smoothstepped,
-     which is what makes the join disappear. */
+  /* The scrim that blends a velvet section into the ivory beside it.
+     Fading plain ivory in over velvet is what leaves a grey line at the join:
+     half ivory over half velvet is a mauve, and no amount of shortening the
+     fade removes it. So the scrim warms as it thins, through champagne and
+     tan into a burnt red, and the blend never leaves the warm family. */
   --scrim-ivory:
-    rgb(255 248 236 / 1.000) 0.0%,
-    rgb(255 248 236 / 0.989) 6.2%,
-    rgb(255 248 236 / 0.957) 12.5%,
-    rgb(255 248 236 / 0.908) 18.8%,
-    rgb(255 248 236 / 0.844) 25.0%,
-    rgb(255 248 236 / 0.768) 31.2%,
-    rgb(255 248 236 / 0.684) 37.5%,
-    rgb(255 248 236 / 0.593) 43.8%,
-    rgb(255 248 236 / 0.500) 50.0%,
-    rgb(255 248 236 / 0.407) 56.2%,
-    rgb(255 248 236 / 0.316) 62.5%,
-    rgb(255 248 236 / 0.232) 68.8%,
-    rgb(255 248 236 / 0.156) 75.0%,
-    rgb(255 248 236 / 0.092) 81.2%,
-    rgb(255 248 236 / 0.043) 87.5%,
-    rgb(255 248 236 / 0.011) 93.8%,
-    rgb(255 248 236 / 0.000) 100.0%;
+    rgb(255 248 236 / 1) 0%,
+    rgb(255 243 220 / 0.93) 12%,
+    rgb(250 230 190 / 0.8) 25%,
+    rgb(238 200 148 / 0.62) 38%,
+    rgb(214 154 104 / 0.44) 51%,
+    rgb(180 104 68 / 0.28) 64%,
+    rgb(142 62 44 / 0.15) 77%,
+    rgb(110 36 30 / 0.06) 89%,
+    rgb(94 11 21 / 0) 100%;
 
   --sindoor: #b3141f;
   --velvet: #5e0b15;
