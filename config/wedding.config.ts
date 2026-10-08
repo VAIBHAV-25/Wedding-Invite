@@ -184,7 +184,7 @@ export const wedding: WeddingConfig = {
       subtitle: 'The night everyone dances',
       startISO: '2027-01-30T18:00:00+05:30',
       endISO: '2027-01-30T23:30:00+05:30',
-      artwork: '/img/events/sangeet-v2.jpg',
+      artwork: '/img/events/sangeet-v3.jpg',
       artworkTone: 'sangeet',
       description: 'Our families have been rehearsing in secret. Come and judge them.',
       dressCode: '',

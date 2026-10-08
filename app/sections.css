@@ -717,14 +717,15 @@
 
 /* ===========================================================================
    INTERLUDE
-   One line on velvet between the venue and the RSVP. Spare on purpose: it is
-   a breath after nine ceremonies and a map, not another block to read.
+   One line on velvet between the venue and the RSVP, crowned by the mandala.
+   It needs height: the scrims take roughly 120px off each end, so a short
+   section leaves almost no velvet and the sentence floats in a thin band.
    ======================================================================== */
 .interlude {
   display: grid;
   place-items: center;
-  min-height: 56dvh;
-  padding-block: clamp(96px, 22vw, 136px);
+  min-height: 74dvh;
+  padding-block: clamp(120px, 26vw, 168px);
 }
 
 .interlude-inner {
@@ -733,40 +734,33 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 26px;
-  max-width: 330px;
+  gap: 4px;
+  width: min(90%, 340px);
   text-align: center;
 }
 
-.interlude-rule {
-  color: var(--gold-2);
+.interlude-mandala {
+  width: 100%;
+  height: auto;
+  /* The arch sweeps out to the corners, so it carries past the text column
+     and the line sits in its opening. */
+  max-width: none;
+  margin-bottom: -6px;
 }
 
 .interlude-line {
-  margin: 0;
-  /* Large, but not as large as the names: this is a sentence, not a title. */
-  font-size: clamp(1.6rem, 7.6vw, 2.1rem);
-  line-height: 1.42;
+  margin: 10px 0 0;
+  /* A sentence spoken aloud, a step below the names. */
+  font-size: clamp(1.5rem, 7.2vw, 1.98rem);
+  line-height: 1.44;
   color: var(--gold-1);
   text-wrap: balance;
 }
 
-.interlude-foot {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.interlude-rule {
+  margin-top: 20px;
   color: var(--gold-2);
-  opacity: 0.75;
-}
-
-.interlude-hair {
-  width: 84px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-2), transparent);
-}
-
-.interlude-flip {
-  transform: scaleX(-1);
+  opacity: 0.85;
 }
 
 /* ===========================================================================
