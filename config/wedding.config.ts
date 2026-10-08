@@ -59,6 +59,8 @@ export const wedding: WeddingConfig = {
         'णमो अरिहंताणं। णमो सिद्धाणं। णमो आयरियाणं।',
         'णमो उवज्झायाणं। णमो लोए सव्वसाहूणं।',
       ],
+      // On the envelope card only. The section itself shows just the mantra.
+      salutation: '॥ जय जिनेंद्र ॥',
       meaning:
         'Seeking the divine blessings of the Jinendras as we begin our sacred journey together.',
     },

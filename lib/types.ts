@@ -46,6 +46,8 @@ export interface Invitation {
   mantra: {
     /** One entry per printed line. */
     lines: string[];
+    /** Shown on the envelope card above the mantra. */
+    salutation: string;
     /** A line of English beneath, saying what is being asked for. */
     meaning: string;
   };

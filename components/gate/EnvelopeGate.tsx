@@ -6,7 +6,7 @@ import { WaxSeal } from './WaxSeal';
 import { ShardCanvas } from './ShardCanvas';
 import { Vortex } from './Vortex';
 import { FoilFoldBand, FoilPaisleyRun, FoilCorner, EnvelopeCrest, GoldMotes } from './EnvelopeArt';
-import { CuspedArch, SuryaRosette } from '@/components/ornaments';
+import Image from 'next/image';
 import type { Deity } from '@/components/ornaments/deities';
 import { music } from '@/lib/audio';
 import { playCrack, playChime, buzz } from '@/lib/sfx';
@@ -37,6 +37,8 @@ interface Props {
   tapHint: string;
   deity: Deity;
   deityImage: string;
+  salutation: string;
+  mantraLines: string[];
   onReveal: () => void;
   onFinished: () => void;
 }
@@ -47,6 +49,8 @@ export function EnvelopeGate({
   tapHint,
   deity,
   deityImage,
+  salutation,
+  mantraLines,
   onReveal,
   onFinished,
 }: Props) {
@@ -175,8 +179,31 @@ export function EnvelopeGate({
 
         <div className="env-card">
           <div className="env-card-face">
-            <CuspedArch className="env-card-arch" width={100} height={132} strokeWidth={0.7} />
-            <SuryaRosette size={96} className="env-card-rosette" />
+            <Image
+              src="/img/mandala-arch.png"
+              alt=""
+              width={760}
+              height={546}
+              sizes="360px"
+              className="env-card-arch"
+              aria-hidden="true"
+              priority
+            />
+            <Image
+              src="/img/mahavira-gold.png"
+              alt="Lord Mahavira seated in meditation"
+              width={659}
+              height={900}
+              sizes="120px"
+              className="env-card-deity"
+              priority
+            />
+            <p className="t-deva env-card-salute">{salutation}</p>
+            <p className="t-deva env-card-mantra">
+              {mantraLines.map((line, i) => (
+                <span key={i}>{line}</span>
+              ))}
+            </p>
             <span className="env-card-monogram t-caps gold-text">{monogram}</span>
           </div>
           <div className="env-card-rays" />

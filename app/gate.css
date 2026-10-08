@@ -54,6 +54,7 @@
 
 /* --- the card rising out of the pocket ----------------------------------- */
 .env-card {
+  container-type: inline-size;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -84,8 +85,10 @@
 .env-card-face {
   position: relative;
   height: 100%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 5%;
   border-radius: 6px;
   background:
     radial-gradient(90% 60% at 50% 0%, #fffdf7 0%, var(--ivory) 60%),
@@ -96,22 +99,47 @@
   overflow: hidden;
 }
 
+/* The same arch and figure as the invocation section. Both are gold on
+   transparent, drawn for velvet, so multiply darkens them into ink on the
+   cream card instead of leaving them washed out. */
 .env-card-arch {
-  position: absolute;
-  inset: 7% 8%;
-  width: 84%;
-  height: 86%;
-  opacity: 0.55;
+  width: 100%;
+  height: auto;
+  /* The outer petals are drawn near-white, which multiplies down to grey on
+     the cream. Sepia pulls them back into the card's gold. */
+  filter: sepia(0.68) saturate(1.9) hue-rotate(-8deg);
+  mix-blend-mode: multiply;
+  opacity: 0.86;
 }
 
-.env-card-rosette {
-  position: absolute;
-  opacity: 0.35;
+.env-card-deity {
+  width: 37%;
+  height: auto;
+  margin-top: -27%;
+  mix-blend-mode: multiply;
+}
+
+.env-card-salute {
+  margin: 4% 0 0;
+  font-size: clamp(0.92rem, 4cqw, 1.1rem);
+  color: #7a1626;
+}
+
+.env-card-mantra {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  margin: 4% 0 0;
+  padding-inline: 7%;
+  font-size: clamp(0.64rem, 2.8cqw, 0.78rem);
+  line-height: 1.5;
+  text-align: center;
+  color: color-mix(in srgb, #7a1626 82%, transparent);
 }
 
 .env-card-monogram {
-  position: relative;
-  font-size: 1.6rem;
+  margin-top: auto;
+  font-size: clamp(1rem, 4.4cqw, 1.25rem);
   letter-spacing: 0.08em;
 }
 

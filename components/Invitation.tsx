@@ -103,6 +103,8 @@ export function Invitation({ config: committed }: { config: WeddingConfig }) {
           tapHint={config.intro.tapHint}
           deity={config.intro.deity}
           deityImage={config.intro.deityImage}
+          salutation={config.invitation.mantra.salutation}
+          mantraLines={config.invitation.mantra.lines}
           onReveal={onReveal}
           onFinished={onFinished}
         />
