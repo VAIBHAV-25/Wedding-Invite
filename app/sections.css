@@ -2166,3 +2166,51 @@
   position: relative;
   z-index: 1;
 }
+
+/* ===========================================================================
+   FIREWORKS
+   The lights drop for the length of the display. Fireworks are drawn
+   additively, and additive blending over an ivory page just saturates to
+   white — without dusk behind them there would be nothing to see.
+   ======================================================================== */
+.fireworks {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+}
+
+.fireworks-dusk {
+  position: absolute;
+  inset: 0;
+  /* Dusk, not blackout: the page should still be sensed behind the display. */
+  background:
+    radial-gradient(120% 90% at 50% 100%, rgba(46, 5, 9, 0.66) 0%, rgba(20, 2, 6, 0.8) 100%);
+  animation: dusk 4.2s var(--ease-royal) forwards;
+}
+
+@keyframes dusk {
+  0% {
+    opacity: 0;
+  }
+  10%,
+  76% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.fireworks canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fireworks {
+    display: none;
+  }
+}

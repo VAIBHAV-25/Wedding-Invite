@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Fireworks } from '@/components/ui/Fireworks';
 import { Reveal } from '@/components/ui/Reveal';
 import { scratchValues } from '@/lib/format';
 import { playChime, playDhol, playScratchTick, buzz } from '@/lib/sfx';
@@ -182,6 +183,7 @@ export function ScratchDate({ config }: { config: WeddingConfig }) {
   const { month, day, year } = scratchValues(config.dates.weddingStart);
   const { muhurat } = config.dates;
   const [allOpen, setAllOpen] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
   const openedRef = useRef(false);
 
   const cards = [
@@ -227,6 +229,12 @@ export function ScratchDate({ config }: { config: WeddingConfig }) {
     playChime(1174);
     playDhol();
     buzz([12, 60, 18, 60, 24]);
+
+    // The confetti is the immediate reward; the display follows a beat later,
+    // once the numbers have landed and there is something to celebrate.
+    window.setTimeout(() => setCelebrating(true), 520);
+    window.setTimeout(() => playDhol(), 900);
+    window.setTimeout(() => playChime(1568), 1500);
   }, []);
 
   return (
@@ -272,6 +280,8 @@ export function ScratchDate({ config }: { config: WeddingConfig }) {
           Just show me the date
         </button>
       )}
+
+      <Fireworks active={celebrating} onDone={() => setCelebrating(false)} />
     </section>
   );
 }

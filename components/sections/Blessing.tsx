@@ -12,10 +12,16 @@ export function Blessing({ config }: { config: WeddingConfig }) {
   const { invitation, couple, intro } = config;
   const inv = invocationFor(intro.deity);
 
-  // Anything written into the config wins over the deity's default invocation.
-  const shloka = invitation.shloka || inv?.shloka || '';
-  const translit = invitation.shlokaTransliteration || inv?.transliteration || '';
-  const english = invitation.shlokaEnglish || inv?.english || '';
+  /**
+   * The deity's default invocation is only used when the config has no shloka
+   * of its own. Once it does, the config's wording is taken verbatim —
+   * including the blank fields, so clearing a line in the config actually
+   * clears it rather than quietly falling back to the default.
+   */
+  const ownWording = Boolean(invitation.shloka);
+  const shloka = ownWording ? invitation.shloka : (inv?.shloka ?? '');
+  const translit = ownWording ? invitation.shlokaTransliteration : (inv?.transliteration ?? '');
+  const english = ownWording ? invitation.shlokaEnglish : (inv?.english ?? '');
   const showExtras = invitation.language === 'both' || invitation.language === 'en';
 
   return (

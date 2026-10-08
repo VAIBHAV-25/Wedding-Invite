@@ -325,7 +325,10 @@ rather count to something else.
 - [ ] Your real love-story milestones (the five in there now are placeholders)
 - [ ] The WhatsApp number RSVPs should go to — currently a dummy
 - [ ] A music track you have the rights to — or say "none"
-- [ ] Hotels, airport and parking notes for the travel section
+- [ ] Travel and stay: the block is switched off because what was in it
+      was invented. Send me the airport and station distances from Monsoon
+      Resort, any hotels you are holding rooms at with real numbers, and the
+      parking arrangement, and I will turn it back on
 - [ ] Latitude and longitude for Monsoon Resort, if you want pin-accurate
       navigation rather than navigation by name
 - [ ] Your domain name

@@ -46,8 +46,9 @@ export const wedding: WeddingConfig = {
   invitation: {
     shloka:
       '॥ श्री गणेशाय नमः ॥\nवक्रतुण्ड महाकाय सूर्यकोटि समप्रभ।\nनिर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा॥',
-    shlokaTransliteration:
-      'Vakratunda Mahakaya Suryakoti Samaprabha · Nirvighnam Kuru Me Deva Sarvakaryeshu Sarvada',
+    // The romanised line. Left empty so only the Devanagari and the English
+    // meaning are shown.
+    shlokaTransliteration: '',
     shlokaEnglish:
       'O Lord of the curved trunk, radiant as a million suns, keep our path free of obstacles, always.',
     introText:
@@ -406,16 +407,18 @@ export const wedding: WeddingConfig = {
     mapEmbedUrl: '',
   },
 
-  /* ---- Getting there and staying ------------------------------------------ */
+  /* ---- Getting there and staying ------------------------------------------
+   * Switched off, because everything that was here was invented: made-up
+   * distances from the resort and two hotels with phone numbers that belong
+   * to nobody. Fill these in and set `enabled: true` to bring the block back.
+   * Any field left empty is simply not shown.
+   * ------------------------------------------------------------------------ */
   travel: {
-    enabled: true,
-    airport: 'Maharana Pratap Airport (UDR), 25 km, about 45 minutes',
-    station: 'Udaipur City Railway Station, 6 km, about 20 minutes',
-    hotels: [
-      { name: 'Hotel Lake Haveli', phone: '+91 98765 43210', mapsUrl: '', note: 'Rooms held under "Singhvi–Jaroli"' },
-      { name: 'The Gangaur Palace', phone: '+91 98765 43211', mapsUrl: '', note: '10 minutes from the mandap' },
-    ],
-    parking: 'Valet parking at the City Palace gate from 5 PM.',
+    enabled: false,
+    airport: '',
+    station: '',
+    hotels: [],
+    parking: '',
   },
 
   /* ---- Look and feel ------------------------------------------------------
