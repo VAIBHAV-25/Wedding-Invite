@@ -27,7 +27,7 @@ export const wedding: WeddingConfig = {
       photo: '',
     },
     // Shown in the invitation, just above your names. Leave empty to omit.
-    illustration: '/img/couple.png',
+    illustration: '/img/couple-pink.png',
     // Stamped into the wax seal on the envelope and the closing monogram.
     monogram: 'V & P',
     hashtag: '#ViP_LoveStory',
@@ -439,7 +439,13 @@ export const wedding: WeddingConfig = {
       rose: '#A8545F',
     },
     fonts: { display: 'Playfair Display', body: 'Cormorant Garamond', script: 'Bonheur Royale' },
-    petals: { enabled: true, density: 'medium', colors: ['#F2B8BE', '#F5D7AE', '#D4AF37', '#F7E3E6'] },
+    // Marigold and deep rose carry the warm end of the palette through the
+    // whole page, not just the sections that happen to be velvet.
+    petals: {
+      enabled: true,
+      density: 'high',
+      colors: ['#F2B8BE', '#F5A623', '#D4AF37', '#E8697D', '#F7D463', '#F7E3E6', '#C9566B'],
+    },
   },
 
   /* ---- Link previews and search ------------------------------------------- */

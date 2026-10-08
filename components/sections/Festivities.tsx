@@ -5,6 +5,7 @@ import { useMemo, useRef } from 'react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { Bridge } from '@/components/ui/Bridge';
+import { Garland } from '@/components/ornaments/Garland';
 import { Parallax, useActiveBand } from '@/components/ui/Parallax';
 import { EventScene } from '@/components/ui/EventScene';
 import { timeRange, time, dayKey, dayHeading } from '@/lib/format';
@@ -120,6 +121,7 @@ export function Festivities({ config }: { config: WeddingConfig }) {
   return (
     <section className="sec velvet sec-dark" id="festivities">
       <Bridge edge="both" />
+      <Garland />
       <SectionHeading label="The celebrations" title="Festivities" tone="dark" />
 
       <div className="timeline">

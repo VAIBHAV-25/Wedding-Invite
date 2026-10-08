@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { CuspedArch, SuryaRosette, SparkleDivider } from '@/components/ornaments';
 import { Bridge } from '@/components/ui/Bridge';
+import { Garland } from '@/components/ornaments/Garland';
 import { longDate } from '@/lib/format';
 import { activeTrack } from '@/lib/content';
 import { Parallax } from '@/components/ui/Parallax';
@@ -75,6 +76,7 @@ export function Hero({ config }: { config: WeddingConfig }) {
   return (
     <section className="sec hero velvet" id="hero" ref={ref} data-live={live ? 'true' : undefined}>
       <Bridge edge="both" />
+      <Garland />
 
       {/* The frame and the sun are sized with the content rather than the
           viewport, so the arch keeps its proportions instead of shearing
@@ -89,8 +91,8 @@ export function Hero({ config }: { config: WeddingConfig }) {
           <Image
             src={couple.illustration}
             alt={`An illustration of ${couple.partner1.shortName} and ${couple.partner2.shortName}`}
-            width={474}
-            height={760}
+            width={580}
+            height={820}
             priority
             className="couple-art"
           />

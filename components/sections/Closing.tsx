@@ -2,6 +2,7 @@
 
 import { MonogramDisc, SparkleDivider } from '@/components/ornaments';
 import { Bridge } from '@/components/ui/Bridge';
+import { Garland } from '@/components/ornaments/Garland';
 import { Reveal } from '@/components/ui/Reveal';
 import { shareMessage, whatsappUrl } from '@/lib/share';
 import { useEffect, useState } from 'react';
@@ -48,6 +49,7 @@ export function Closing({ config }: { config: WeddingConfig }) {
   return (
     <section className="sec closing" id="closing">
       <Bridge edge="top" />
+      <Garland />
       <div className="closing-inner">
         <Reveal>
           <p className="t-body closing-line">{invitation.closingLine}</p>

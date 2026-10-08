@@ -15,11 +15,12 @@ interface Petal {
   vr: number;
   size: number;
   color: string;
+  round: boolean;
   flip: number;
   flipSpeed: number;
 }
 
-const COUNT: Record<PetalDensity, number> = { low: 12, medium: 22, high: 32 };
+const COUNT: Record<PetalDensity, number> = { low: 14, medium: 24, high: 38 };
 
 /**
  * Petals falling over the whole invitation.
@@ -68,8 +69,10 @@ export function PetalCanvas({
       swaySpeed: 0.006 + Math.random() * 0.012,
       rot: Math.random() * Math.PI * 2,
       vr: (Math.random() - 0.5) * 0.02,
-      size: 5 + Math.random() * 7,
+      size: 5 + Math.random() * 8.5,
       color: palette[Math.floor(Math.random() * palette.length)],
+      // Roughly a third fall as whole blooms rather than single petals.
+      round: Math.random() < 0.32,
       flip: Math.random() * Math.PI * 2,
       flipSpeed: 0.012 + Math.random() * 0.022,
     });
@@ -142,11 +145,20 @@ export function PetalCanvas({
         // Far petals sit back behind a touch of blur.
         ctx.filter = p.z < 0.6 ? 'blur(1.2px)' : 'none';
         ctx.fillStyle = p.color;
-        ctx.beginPath();
         const s = p.size * p.z;
-        ctx.moveTo(0, -s);
-        ctx.bezierCurveTo(s * 0.9, -s * 0.5, s * 0.75, s * 0.6, 0, s);
-        ctx.bezierCurveTo(-s * 0.75, s * 0.6, -s * 0.9, -s * 0.5, 0, -s);
+        ctx.beginPath();
+        if (p.round) {
+          // A whole bloom: a small ruffled disc.
+          ctx.arc(0, 0, s * 0.72, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha *= 0.55;
+          ctx.beginPath();
+          ctx.arc(0, 0, s * 0.4, 0, Math.PI * 2);
+        } else {
+          ctx.moveTo(0, -s);
+          ctx.bezierCurveTo(s * 0.9, -s * 0.5, s * 0.75, s * 0.6, 0, s);
+          ctx.bezierCurveTo(-s * 0.75, s * 0.6, -s * 0.9, -s * 0.5, 0, -s);
+        }
         ctx.fill();
         ctx.restore();
       }

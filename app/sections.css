@@ -15,6 +15,13 @@
   color: var(--ivory);
 }
 
+/* Clearing the garland. */
+.sec-dark,
+.hero,
+.closing {
+  padding-top: clamp(104px, 23vw, 132px);
+}
+
 /* Soft bridges between a velvet section and the ivory on either side. */
 /* The join between velvet and ivory. See components/ui/Bridge.tsx for why
    these are elements and not pseudo-elements. */
@@ -37,6 +44,13 @@
 .bridge-bottom {
   bottom: -1px;
   background: linear-gradient(to top, var(--scrim-ivory));
+}
+
+/* The garland hangs in front of the scrim, so the scrim reaches past it. */
+.sec-dark .bridge-top,
+.hero .bridge-top,
+.closing .bridge-top {
+  height: 150px;
 }
 
 .sec-head {
@@ -2063,4 +2077,94 @@
 .hero-hash span {
   font-size: 0.62em;
   color: var(--gold-2);
+}
+
+/* ===========================================================================
+   COLOUR RHYTHM
+   Every light section was the same flat ivory, so nine screens in a row read
+   as one undifferentiated page. Each now sits on its own paper stock: a wash
+   pulled from the palette, faint enough to read as the sheet rather than a
+   colour block, but enough that the page moves as you scroll.
+   ======================================================================== */
+#blessing.ivory-field {
+  background-image:
+    radial-gradient(105% 62% at 50% 0%, color-mix(in srgb, var(--champagne) 72%, transparent) 0%, transparent 70%),
+    radial-gradient(80% 48% at 100% 100%, color-mix(in srgb, var(--petal) 32%, transparent) 0%, transparent 72%);
+}
+
+#date.ivory-field {
+  background-image:
+    radial-gradient(110% 58% at 50% 0%, color-mix(in srgb, var(--petal) 40%, transparent) 0%, transparent 72%),
+    radial-gradient(90% 55% at 8% 96%, color-mix(in srgb, var(--marigold) 20%, transparent) 0%, transparent 70%);
+}
+
+#countdown.ivory-field {
+  background-image:
+    radial-gradient(110% 60% at 50% 4%, color-mix(in srgb, var(--marigold) 22%, transparent) 0%, transparent 72%),
+    radial-gradient(85% 50% at 94% 98%, color-mix(in srgb, var(--champagne) 85%, transparent) 0%, transparent 70%);
+}
+
+#memories.ivory-field {
+  background-image:
+    radial-gradient(105% 58% at 50% 2%, color-mix(in srgb, var(--petal) 34%, transparent) 0%, transparent 70%),
+    radial-gradient(80% 46% at 4% 98%, color-mix(in srgb, var(--champagne) 70%, transparent) 0%, transparent 70%);
+}
+
+#venue.ivory-field {
+  background-image:
+    radial-gradient(110% 60% at 50% 0%, color-mix(in srgb, var(--marigold) 26%, transparent) 0%, transparent 72%),
+    radial-gradient(85% 52% at 96% 100%, color-mix(in srgb, var(--petal) 26%, transparent) 0%, transparent 72%);
+}
+
+#story.ivory-field {
+  background-image:
+    radial-gradient(108% 58% at 50% 2%, color-mix(in srgb, var(--petal) 38%, transparent) 0%, transparent 72%),
+    radial-gradient(82% 48% at 2% 96%, color-mix(in srgb, var(--marigold) 16%, transparent) 0%, transparent 70%);
+}
+
+#rsvp.ivory-field {
+  background-image:
+    radial-gradient(112% 62% at 50% 0%, color-mix(in srgb, var(--champagne) 88%, transparent) 0%, transparent 72%),
+    radial-gradient(88% 54% at 92% 100%, color-mix(in srgb, var(--petal) 30%, transparent) 0%, transparent 72%);
+}
+
+/* ===========================================================================
+   THE GARLAND
+   ======================================================================== */
+/* Height follows the width so the blooms stay round, and nothing is cropped. */
+.garland {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 420 / 62;
+  height: auto;
+  z-index: 7;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 9px rgba(14, 2, 4, 0.5));
+}
+
+/* ===========================================================================
+   JAALI WATERMARK
+   The light sections were large empty fields. A lattice pressed faintly into
+   the paper gives them something to be, without competing with the words.
+   ======================================================================== */
+.ivory-field::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    repeating-linear-gradient(45deg, transparent 0 21px, color-mix(in srgb, var(--gold-3) 16%, transparent) 21px 22px),
+    repeating-linear-gradient(-45deg, transparent 0 21px, color-mix(in srgb, var(--gold-3) 13%, transparent) 21px 22px);
+  /* Faded away from the middle so the text never sits on the lattice. */
+  -webkit-mask-image: radial-gradient(120% 78% at 50% 50%, transparent 32%, #000 92%);
+  mask-image: radial-gradient(120% 78% at 50% 50%, transparent 32%, #000 92%);
+}
+
+.ivory-field > * {
+  position: relative;
+  z-index: 1;
 }
