@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import type { WeddingConfig } from '@/lib/types';
 
 export function Closing({ config }: { config: WeddingConfig }) {
-  const { hosts, couple, invitation, features, seo } = config;
+  const { couple, invitation, features, seo } = config;
   const [url, setUrl] = useState(seo.siteUrl);
   const [copied, setCopied] = useState(false);
 
@@ -57,14 +57,6 @@ export function Closing({ config }: { config: WeddingConfig }) {
 
         <Reveal delay={80}>
           <SparkleDivider width={170} className="closing-rule" />
-        </Reveal>
-
-        <Reveal delay={140}>
-          <p className="t-caps closing-regards">{hosts.regardsLine},</p>
-        </Reveal>
-
-        <Reveal delay={200}>
-          <p className="closing-family">{hosts.familyNames}</p>
         </Reveal>
 
         <Reveal variant="scale" delay={280}>

@@ -97,7 +97,7 @@ export function Venue({ config }: { config: WeddingConfig }) {
             </dl>
 
             {travel.hotels.length > 0 && (
-              <ul className="hotels">
+              <ul className="hotels" aria-label="Where to stay">
                 {travel.hotels.map((h) => (
                   <li key={h.name}>
                     <p className="hotel-name">{h.name}</p>

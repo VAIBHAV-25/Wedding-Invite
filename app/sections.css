@@ -1327,168 +1327,24 @@
   color: var(--rose);
 }
 
-.rsvp-card {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 30px 22px;
-  border-radius: 20px;
-  background: #fffdf8;
-}
-
-.rsvp-form {
-  display: grid;
-  gap: 18px;
-}
-
-.field {
-  display: grid;
-  gap: 7px;
-}
-
-.field > span {
-  font-size: 0.66rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold-3);
-}
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  min-height: 48px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--gold-2) 42%, transparent);
-  background: var(--ivory);
-  font-size: 1rem;
-  /* 16px or more, or iOS zooms the page when the field is focused. */
-  color: var(--ink);
-}
-
-.field textarea {
-  resize: vertical;
-  min-height: 84px;
-}
-
-.field input::placeholder,
-.field textarea::placeholder {
-  color: color-mix(in srgb, var(--ink) 38%, transparent);
-  font-style: italic;
-}
-
-.choice {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.choice legend {
-  padding: 0;
-  margin-bottom: 10px;
-  font-size: 0.66rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold-3);
-}
-
-.choice-row {
-  display: grid;
-  gap: 9px;
-}
-
-.choice-btn {
-  min-height: 50px;
-  padding: 13px 16px;
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--gold-2) 42%, transparent);
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--rose);
-  background: var(--ivory);
-  transition: background 0.3s var(--ease-royal), color 0.3s var(--ease-royal);
-}
-
-.choice-btn[data-selected='true'] {
-  background: linear-gradient(170deg, var(--sindoor), var(--velvet));
-  border-color: transparent;
-  color: var(--ivory);
-}
-
-.event-picks {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 9px;
-}
-
-.pick {
+.rsvp-reply {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 48px;
-  padding: 11px 12px;
-  border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--gold-2) 40%, transparent);
-  background: var(--ivory);
-  font-size: 0.88rem;
-  text-align: left;
-  color: var(--ink);
-  transition: border-color 0.25s var(--ease-royal), background 0.25s var(--ease-royal);
-}
-
-.pick[data-selected='true'] {
-  border-color: var(--gold-2);
-  background: color-mix(in srgb, var(--gold-2) 11%, transparent);
-}
-
-.pick-check {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 19px;
-  height: 19px;
-  border-radius: 5px;
-  border: 1px solid color-mix(in srgb, var(--gold-2) 60%, transparent);
-  color: transparent;
-}
-
-.pick[data-selected='true'] .pick-check {
-  background: var(--gold-2);
-  border-color: var(--gold-2);
-  color: var(--velvet-deep);
-}
-
-.pick-check svg {
-  width: 13px;
-  height: 13px;
-}
-
-.rsvp-note {
-  margin: 0;
-  font-size: 0.8rem;
-  font-style: italic;
-  text-align: center;
-  color: color-mix(in srgb, var(--ink) 74%, transparent);
-}
-
-.rsvp-done {
-  text-align: center;
-}
-
-.rsvp-thanks {
-  margin: 0 0 10px;
-  font-size: 2.1rem;
-  color: var(--velvet);
-}
-
-.rsvp-done-actions {
-  display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
-  margin-top: 20px;
+  max-width: 340px;
+  margin: 0 auto;
 }
+
+.rsvp-whatsapp {
+  width: 100%;
+  min-height: 54px;
+  font-size: 0.86rem;
+}
+
+.rsvp-whatsapp .wa {
+  width: 20px;
+  height: 20px;
+}
+
 
 /* ===========================================================================
    SHAGUN

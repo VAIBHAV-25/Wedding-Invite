@@ -365,8 +365,12 @@ export const wedding: WeddingConfig = {
   },
 
   /* ---- RSVP ---------------------------------------------------------------
-   * Answers arrive as a prefilled WhatsApp message to the number below.
+   * There is no form. The button opens WhatsApp to the number below with a
+   * greeting already written, and guests reply in their own words.
    * Digits only, with the country code and no "+".
+   *
+   * maxGuests, mealOptions, askSong and askMessage are unused while there is
+   * no form, and are kept so one can be put back without reworking the type.
    * ------------------------------------------------------------------------ */
   rsvp: {
     enabled: true,
@@ -408,17 +412,23 @@ export const wedding: WeddingConfig = {
   },
 
   /* ---- Getting there and staying ------------------------------------------
-   * Switched off, because everything that was here was invented: made-up
-   * distances from the resort and two hotels with phone numbers that belong
-   * to nobody. Fill these in and set `enabled: true` to bring the block back.
    * Any field left empty is simply not shown.
    * ------------------------------------------------------------------------ */
   travel: {
-    enabled: false,
-    airport: '',
-    station: '',
-    hotels: [],
-    parking: '',
+    enabled: true,
+    airport:
+      'Maharana Pratap Airport, Dabok. About 25 to 27 km, roughly 35 to 45 minutes by road via NH48 and the Debari bypass.',
+    station:
+      'Udaipur City Railway Station. About 8 to 8.5 km, roughly 20 to 25 minutes by road depending on traffic.',
+    hotels: [
+      {
+        name: 'Monsoon Resort',
+        phone: '',
+        mapsUrl: 'https://maps.app.goo.gl/Tjz5AUoYGQpeQwM99',
+        note: 'Rooms are available at the resort itself. None are held or reserved by default, so please book directly.',
+      },
+    ],
+    parking: 'Complimentary self-parking on site for all guests.',
   },
 
   /* ---- Look and feel ------------------------------------------------------
