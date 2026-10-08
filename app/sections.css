@@ -1302,10 +1302,29 @@
 /* ===========================================================================
    RSVP
    ======================================================================== */
-.rsvp-deadline {
-  margin: -18px 0 24px;
+.rsvp-regards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: -14px 0 28px;
   text-align: center;
+}
+
+.rsvp-regards svg {
+  color: var(--gold-2);
+}
+
+.rsvp-regards-label {
+  margin: 0;
   color: var(--gold-3);
+}
+
+.rsvp-regards-names {
+  margin: 0;
+  font-size: 1.06rem;
+  font-style: italic;
+  color: var(--rose);
 }
 
 .rsvp-card {

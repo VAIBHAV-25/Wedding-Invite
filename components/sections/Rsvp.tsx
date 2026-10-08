@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/ui/Reveal';
 import { visibleEvents } from '@/lib/content';
+import { SparkleDivider } from '@/components/ornaments';
 import { rsvpMessage, whatsappUrl } from '@/lib/share';
-import { longDate } from '@/lib/format';
 import { useGuestName, useLocalStorage } from '@/lib/hooks';
 import { playChime, buzz } from '@/lib/sfx';
 import type { RsvpSubmission, WeddingConfig } from '@/lib/types';
@@ -22,7 +22,7 @@ const BLANK: RsvpSubmission = {
 };
 
 export function Rsvp({ config }: { config: WeddingConfig }) {
-  const { rsvp, couple } = config;
+  const { rsvp, couple, hosts } = config;
   const events = visibleEvents(config);
   const guest = useGuestName();
 
@@ -90,11 +90,14 @@ export function Rsvp({ config }: { config: WeddingConfig }) {
         lead="Your presence will make this celebration whole. Let us know by sending the note straight to our WhatsApp."
       />
 
-      {rsvp.deadline && (
-        <Reveal>
-          <p className="rsvp-deadline t-caps">Kindly reply by {longDate(rsvp.deadline)}</p>
-        </Reveal>
-      )}
+      {/* The families sign the ask, rather than putting a deadline on it. */}
+      <Reveal>
+        <div className="rsvp-regards">
+          <SparkleDivider width={140} />
+          <p className="t-caps rsvp-regards-label">{hosts.regardsLine}</p>
+          <p className="rsvp-regards-names">{hosts.familyNames}</p>
+        </div>
+      </Reveal>
 
       <Reveal variant="pop" delay={80}>
         <div className="rsvp-card double-gold">
