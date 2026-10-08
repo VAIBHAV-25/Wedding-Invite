@@ -723,8 +723,7 @@
 .mantra {
   display: grid;
   place-items: center;
-  min-height: 80dvh;
-  padding-block: clamp(100px, 22vw, 140px) clamp(84px, 18vw, 116px);
+  padding-block: clamp(40px, 8vw, 56px) clamp(44px, 9vw, 60px);
 }
 
 .mantra-inner {
@@ -762,25 +761,18 @@
 /* Beneath the arch rather than over it. Two sets of fine gold lines laid on
    each other just read as noise. */
 .mantra-deity {
-  width: clamp(168px, 46vw, 210px);
+  width: clamp(112px, 29vw, 134px);
   height: auto;
   /* Closes the gap the artwork's own glow margin leaves under the arch. */
-  margin-top: -5%;
+  margin-top: -27%;
 }
 
-.mantra-title {
-  margin: 10px 0 0;
-  font-size: clamp(1.5rem, 7.2vw, 1.92rem);
-  font-weight: 400;
-  line-height: 1.4;
-  color: var(--gold-1);
-}
 
 .mantra-lines {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  margin: 16px 0 0;
+  margin: 12px 0 0;
   max-width: 340px;
   font-size: clamp(0.94rem, 4.3vw, 1.08rem);
   line-height: 1.6;
@@ -788,24 +780,15 @@
 }
 
 .mantra-rule {
-  margin-top: 22px;
+  margin-top: 16px;
   color: var(--gold-2);
   opacity: 0.85;
 }
 
-.mantra-rule-last {
-  margin-top: 26px;
-  opacity: 0.6;
-}
 
-.mantra-salute {
-  margin: 20px 0 0;
-  font-size: clamp(1.08rem, 5vw, 1.28rem);
-  color: var(--gold-1);
-}
 
 .mantra-meaning {
-  margin: 16px auto 0;
+  margin: 14px auto 0;
   max-width: 30ch;
   font-size: clamp(1.08rem, 4.8vw, 1.22rem);
   font-style: italic;

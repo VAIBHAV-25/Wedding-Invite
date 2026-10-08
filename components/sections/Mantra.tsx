@@ -10,9 +10,8 @@ import type { WeddingConfig } from '@/lib/types';
  * The mandala crowns it full-bleed and the seated Tirthankara stands beneath
  * the arch, so the lines of the artwork stay clear of the lines of the
  * pattern.
- * Everything under it is centred on one column: the mantra's name, the mantra
- * itself, the salutation, and a line of English saying what is being asked
- * for.
+ * Under it, centred on one column: the mantra itself and a line of English
+ * saying what is being asked for.
  */
 export function Mantra({ config }: { config: WeddingConfig }) {
   const m = config.invitation.mantra;
@@ -48,12 +47,6 @@ export function Mantra({ config }: { config: WeddingConfig }) {
           />
         </Reveal>
 
-        {m.title && (
-          <Reveal delay={120}>
-            <h2 className="t-deva mantra-title">{m.title}</h2>
-          </Reveal>
-        )}
-
         <Reveal variant="scale" delay={200}>
           <p className="t-deva mantra-lines">
             {m.lines.map((line, i) => (
@@ -66,21 +59,12 @@ export function Mantra({ config }: { config: WeddingConfig }) {
           <SparkleDivider width={116} className="mantra-rule" />
         </Reveal>
 
-        {m.salutation && (
-          <Reveal delay={340}>
-            <p className="t-deva mantra-salute">{m.salutation}</p>
-          </Reveal>
-        )}
-
         {m.meaning && (
           <Reveal delay={400}>
             <p className="t-body mantra-meaning">{m.meaning}</p>
           </Reveal>
         )}
 
-        <Reveal delay={460}>
-          <SparkleDivider width={92} className="mantra-rule mantra-rule-last" />
-        </Reveal>
       </div>
     </section>
   );
