@@ -85,6 +85,11 @@
 .env-card-face {
   position: relative;
   height: 100%;
+  /* The gold art is multiplied onto the paper. Without this the blend group
+     is .env-card, so the art also multiplies against .env-card-rays behind
+     it, and once that glow reaches full opacity the gold washes out to
+     nothing. Isolating keeps the backdrop to the card's own face. */
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,27 +120,17 @@
 .env-card-deity {
   width: 37%;
   height: auto;
-  margin-top: -27%;
+  /* Sits under the arch's opening, clear of its springing line. */
+  margin-top: -17%;
   mix-blend-mode: multiply;
 }
 
 .env-card-salute {
-  margin: 4% 0 0;
+  margin: 6% 0 0;
   font-size: clamp(0.92rem, 4cqw, 1.1rem);
   color: #7a1626;
 }
 
-.env-card-mantra {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3em;
-  margin: 4% 0 0;
-  padding-inline: 7%;
-  font-size: clamp(0.64rem, 2.8cqw, 0.78rem);
-  line-height: 1.5;
-  text-align: center;
-  color: color-mix(in srgb, #7a1626 82%, transparent);
-}
 
 .env-card-monogram {
   margin-top: auto;

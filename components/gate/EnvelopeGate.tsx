@@ -38,7 +38,6 @@ interface Props {
   deity: Deity;
   deityImage: string;
   salutation: string;
-  mantraLines: string[];
   onReveal: () => void;
   onFinished: () => void;
 }
@@ -50,7 +49,6 @@ export function EnvelopeGate({
   deity,
   deityImage,
   salutation,
-  mantraLines,
   onReveal,
   onFinished,
 }: Props) {
@@ -199,11 +197,6 @@ export function EnvelopeGate({
               priority
             />
             <p className="t-deva env-card-salute">{salutation}</p>
-            <p className="t-deva env-card-mantra">
-              {mantraLines.map((line, i) => (
-                <span key={i}>{line}</span>
-              ))}
-            </p>
             <span className="env-card-monogram t-caps gold-text">{monogram}</span>
           </div>
           <div className="env-card-rays" />
